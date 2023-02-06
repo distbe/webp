@@ -1,53 +1,33 @@
 <script>
-	import Header from './Header.svelte';
-	import './styles.css';
+  import '$assets/css/app.css';
+  import logo from '$assets/images/logo.png';
+  import { page } from '$app/stores';
 </script>
 
-<div class="app">
-	<Header />
+<div class="flex flex-col min-h-screen">
+  <header class="sticky py-2">
+    <div class="w-full container px-4 mx-auto flex justify-between">
+      <div class="corner">
+        <a href="/"><img src={logo} alt="dist.be" class="w-[72px] h-[32px]" /></a>
+      </div>
 
-	<main>
-		<slot />
-	</main>
+      <nav>
+        <ul class="flex gap-x-4">
+          <li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+            <a href="/about">About</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
+  <main class="flex-1">
+    <slot />
+  </main>
+
+  <footer class="pt-8 pb-4">
+    <div class="container mx-auto px-4">
+      <p class="text-sm text-gray-600">Copyright &copy; dist.be</p>
+    </div>
+  </footer>
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>
