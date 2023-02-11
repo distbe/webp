@@ -12,6 +12,10 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
+	"type": "module",
+	"dependencies": {
+		"wasm-vips": "^0.0.4"
+	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
@@ -34,7 +38,7 @@
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0",
+		"vite-plugin-static-copy": "^0.13.0",
 		"vitest": "^0.25.3"
-	},
-	"type": "module"
+	}
 }
