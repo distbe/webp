@@ -2,4 +2,9 @@
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
+  "cSpell.words": [
+    "hshrink",
+    "vscale",
+    "vshrink"
+  ],
 }

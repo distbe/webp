@@ -1,19 +1,38 @@
 <script lang="ts">
   import Card from '$components/Card.svelte';
-  import CardEmpty from '$components/CardEmpty.svelte';
-  import InputNumber from '$components/InputNumber.svelte';
   import InputGroup from '$components/InputGroup.svelte';
-  import { loadVips } from '$lib/utils/vips';
-  import { download } from '$lib/utils/blob';
   import InputKnob from '$components/InputKnob.svelte';
+  import InputNumber from '$components/InputNumber.svelte';
+  import InputSelect from '$components/InputSelect.svelte';
+  import { download } from '$lib/utils/blob';
+  import { loadVips, resize, type Fit } from '$lib/utils/vips';
 
   $: isDragging = false;
 
   let inputQuality = 100;
 
-  let onSize = false;
+  let onSize = true;
   let inputWidth: number | null = null;
   let inputHeight: number | null = null;
+  let inputFit: Fit = 'Cover';
+
+  let onScale = false;
+  let inputScale: number = 1;
+
+  function toggledOnSize(onSize: boolean) {
+    if (onSize && onScale) {
+      onScale = false;
+    }
+  }
+
+  function toggledOnScale(onScale: boolean) {
+    if (onScale && onSize) {
+      onSize = false;
+    }
+  }
+
+  $: toggledOnSize(onSize);
+  $: toggledOnScale(onScale);
 
   function onDragEnter(e: DragEvent) {
     isDragging = true;
@@ -33,14 +52,12 @@
     for (const file of files) {
       let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
       if (onSize && (inputWidth || inputHeight)) {
-        const originWidth = im.width;
-        const originHeight = im.height;
-        im = im.resize(0.5, {});
-        // im = im.crop
+        im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
+      } else if (onScale && inputScale) {
+        im = im.resize(inputScale, {});
       }
 
       const quality = ~~inputQuality; // to int
-      console.log('quality', quality);
       const buffer = await im.writeToBuffer(`.webp[Q=${quality}]`);
 
       if (files.length === 1) {
@@ -54,7 +71,7 @@
 
 <svelte:body on:dragenter|preventDefault|stopPropagation={onDragEnter} />
 
-<div class="flex flex-col h-fit">
+<div class="flex flex-col h-full gap-y-6">
   <section>
     <div class="container mx-auto px-4">
       <div class="flex gap-8 items-center justify-center">
@@ -76,20 +93,30 @@
             <InputGroup label="Height">
               <InputNumber bind:value={inputHeight} min={0} />
             </InputGroup>
+            <InputGroup label="Fit">
+              <InputSelect
+                options={['Contain', 'Cover', 'Fill', 'Inside', 'Outside']}
+                bind:value={inputFit}
+              />
+            </InputGroup>
           </div>
         </Card>
-        <Card title="Scale" bind:on={onSize}>
+        <Card title="Scale" bind:on={onScale}>
           <div class="space-y-2">
             <InputGroup label="Scale">
-              <InputNumber bind:value={inputWidth} min={0} />
+              <InputNumber bind:value={inputScale} min={0} />
             </InputGroup>
           </div>
         </Card>
       </div>
     </div>
   </section>
-  <section class="flex-1">
-    <div class="container mx-auto px-4 h-full border border-white">Drop</div>
+  <section class="flex-1 flex items-center justify-center">
+    <div
+      class="p-8 rounded-2xl border border-dashed border-white border-opacity-50 text-white dropzone"
+    >
+      Drop Your Image Files!
+    </div>
   </section>
 </div>
 {#if isDragging}
@@ -100,3 +127,9 @@
     on:drop|preventDefault|stopPropagation={onDrop}
   />
 {/if}
+
+<style>
+  .dropzone {
+    box-shadow: 0 0 75vmin rgba(255, 255, 255, 0.75);
+  }
+</style>
