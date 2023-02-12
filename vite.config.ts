@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig, Plugin } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy'
-import path from 'path'
+import copy from 'rollup-plugin-copy'
+
 
 const viteServerConfig: Plugin = {
 	name: 'log-request-middleware',
@@ -21,18 +21,20 @@ const config: UserConfig = {
 	plugins: [
 		viteServerConfig,
 		sveltekit(),
-		viteStaticCopy({
+		copy({
       targets: [
-        {
-          src: 'node_modules/wasm-vips/lib/vips.wasm',
-          dest: 'wasm-vips/vips.wasm',
-        }
+        { src: 'node_modules/wasm-vips/lib/**/*', dest: 'static/node_modules/wasm-vips/lib' },
       ]
     }),
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
-	}
+	},
+	build: {
+		rollupOptions: {
+			external: ['/node_modules/wasm-vips/lib/vips-es6.js'],
+		},
+	},
 };
 
 export default config;
