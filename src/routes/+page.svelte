@@ -11,10 +11,11 @@
 
   let inputQuality = 100;
 
-  let onSize = true;
+  let onSize = false;
   let inputWidth: number | null = null;
   let inputHeight: number | null = null;
   let inputFit: Fit = 'Cover';
+  let progress: number | null = null;
 
   let onScale = false;
   let inputScale: number = 1;
@@ -47,9 +48,14 @@
       return;
     }
 
+    progress = 0;
     const vips = await loadVips();
 
-    for (const file of files) {
+    const zip = files.length > 1 ? await import('jszip').then((m) => new m.default()) : null;
+    const filenames = new Set<string>();
+
+    for (const [fileIndex, file] of files.entries()) {
+      progress = fileIndex / files.length;
       let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
       if (onSize && (inputWidth || inputHeight)) {
         im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
@@ -60,12 +66,29 @@
       const quality = ~~inputQuality; // to int
       const buffer = await im.writeToBuffer(`.webp[Q=${quality}]`);
 
+      const blob = new Blob([buffer], { type: 'image/webp' });
+      const filename = file.name.replace(/\.[^/.]+$/, '');
+
       if (files.length === 1) {
-        const blob = new Blob([buffer], { type: 'image/webp' });
-        const filename = file.name.replace(/\.[^/.]+$/, '') + '.webp';
-        download(blob, filename);
+        download(blob, `${filename}.webp`);
+        progress = 1;
+        return;
+      } else {
+        let newFilename = filename;
+        let i = 1;
+        while (filenames.has(newFilename)) {
+          newFilename = `${filename} (${i})`;
+          i++;
+        }
+        zip!.file(`${newFilename}.webp`, blob);
       }
     }
+
+    if (zip) {
+      const blob = await zip.generateAsync({ type: 'blob' });
+      download(blob, 'images.zip');
+    }
+    progress = 1;
   }
 </script>
 
@@ -78,7 +101,7 @@
         <Card title="Quality" on={true} disabled>
           <InputGroup label="Quality">
             <div class="space-y-4">
-              <InputNumber bind:value={inputQuality} max={100} min={0} />
+              <InputNumber bind:value={inputQuality} max={100} min={0} step={1} />
               <div class="w-28 mx-auto">
                 <InputKnob bind:value={inputQuality} max={100} min={0} />
               </div>
@@ -88,10 +111,10 @@
         <Card title="Size" bind:on={onSize}>
           <div class="space-y-2">
             <InputGroup label="Width">
-              <InputNumber bind:value={inputWidth} min={0} />
+              <InputNumber bind:value={inputWidth} min={0} step={1} />
             </InputGroup>
             <InputGroup label="Height">
-              <InputNumber bind:value={inputHeight} min={0} />
+              <InputNumber bind:value={inputHeight} min={0} step={1} />
             </InputGroup>
             <InputGroup label="Fit">
               <InputSelect
@@ -121,7 +144,7 @@
 </div>
 {#if isDragging}
   <div
-    class="fixed inset-0 border-4 border-blue-400 flex items-center justify-center bg-black bg-opacity-50"
+    class="fixed inset-0 border-4 border-blue flex items-center justify-center bg-black bg-opacity-50"
     on:dragover|preventDefault|stopPropagation
     on:dragleave|preventDefault|stopPropagation={onDragLeave}
     on:drop|preventDefault|stopPropagation={onDrop}
