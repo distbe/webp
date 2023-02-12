@@ -38,12 +38,23 @@
   function onDragEnter(e: DragEvent) {
     isDragging = true;
   }
+
   function onDragLeave(e: DragEvent) {
     isDragging = false;
   }
+
+  async function onClickUpload() {
+    const fileDialog = await import('file-dialog').then((m) => m.default);
+    const files = await fileDialog({ accept: 'image/*', multiple: true });
+    await transform([...files]);
+  }
+
   async function onDrop(e: DragEvent) {
     isDragging = false;
-    const files = [...(e.dataTransfer?.files ?? [])];
+    await transform([...(e.dataTransfer?.files ?? [])]);
+  }
+
+  async function transform(files: File[]) {
     if (files.length === 0) {
       return;
     }
@@ -92,6 +103,31 @@
   }
 </script>
 
+<svelte:head>
+  <title>WebP converter by dist.be</title>
+  <meta
+    name="description"
+    content="Convert Images to WebP for Faster Loading and Better User Experience. Start Optimizing Today!"
+  />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#ffffff" />
+</svelte:head>
 <svelte:body on:dragenter|preventDefault|stopPropagation={onDragEnter} />
 
 <div class="flex flex-col h-full gap-y-6">
@@ -108,7 +144,7 @@
             </div>
           </InputGroup>
         </Card>
-        <Card title="Size" bind:on={onSize}>
+        <Card title="Size" bind:on={onSize} color={2}>
           <div class="space-y-2">
             <InputGroup label="Width">
               <InputNumber bind:value={inputWidth} min={0} step={1} />
@@ -124,7 +160,7 @@
             </InputGroup>
           </div>
         </Card>
-        <Card title="Scale" bind:on={onScale}>
+        <Card title="Scale" bind:on={onScale} color={3}>
           <div class="space-y-2">
             <InputGroup label="Scale">
               <InputNumber bind:value={inputScale} min={0} />
@@ -135,10 +171,13 @@
     </div>
   </section>
   <section class="flex-1 flex items-center justify-center">
-    <div
-      class="p-8 rounded-2xl border border-dashed border-white border-opacity-50 text-white dropzone"
-    >
-      Drop Your Image Files!
+    <div class=" dropzone space-y-1">
+      <div class="text-white font-light text-center">Drop your images here to start!</div>
+      <div class="text-center">
+        <button class="text-white font-light text-center text-sm underline" on:click={onClickUpload}
+          >or Click to Upload Images</button
+        >
+      </div>
     </div>
   </section>
 </div>
@@ -153,6 +192,7 @@
 
 <style>
   .dropzone {
+    @apply p-8 rounded-2xl border border-dashed border-white border-opacity-50;
     box-shadow: 0 0 75vmin rgba(255, 255, 255, 0.75);
   }
 </style>

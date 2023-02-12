@@ -2,6 +2,7 @@
   export let disabled = false;
   export let on = false;
   export let title: string;
+  export let color = 1;
 
   function toggle() {
     if (disabled) {
@@ -11,7 +12,14 @@
   }
 </script>
 
-<div class="card" class:card--on={on} class:card--off={!on}>
+<div
+  class="card"
+  class:card--on={on}
+  class:card--off={!on}
+  class:card--color1={color === 1}
+  class:card--color2={color === 2}
+  class:card--color3={color === 3}
+>
   <dvi class="card__header">
     <h3 class="card__title">{title}</h3>
     {#if !disabled}
@@ -47,8 +55,16 @@
   }
 
   .card--on.card::before {
-    background-image: linear-gradient(var(--rotate), #5ddcff, #3c67e3 43%, #4e00c2);
     animation: rotate 5s linear infinite;
+  }
+  .card--color1.card--on.card::before {
+    background-image: linear-gradient(var(--rotate), #dd31d2, #519cff);
+  }
+  .card--color2.card--on.card::before {
+    background-image: linear-gradient(var(--rotate), #519cff, #00d5ff);
+  }
+  .card--color3.card--on.card::before {
+    background-image: linear-gradient(var(--rotate), #00d5ff, #0fffd3);
   }
 
   .card--off.card::before {
@@ -68,8 +84,19 @@
   .card--on.card::after {
     transform: scale(0.75);
     filter: blur(60px);
-    background-image: linear-gradient(var(--rotate), #5ddcff, #3c67e3 43%, #4e00c2);
     animation: rotate 5s linear infinite;
+  }
+
+  .card--color1.card--on.card::after {
+    background-image: linear-gradient(var(--rotate), #dd31d2, #519cff);
+  }
+
+  .card--color2.card--on.card::after {
+    background-image: linear-gradient(var(--rotate), #519cff, #00d5ff);
+  }
+
+  .card--color3.card--on.card::after {
+    background-image: linear-gradient(var(--rotate), #00d5ff #0fffd3);
   }
 
   .card__header {
@@ -81,11 +108,19 @@
 
   .card--on .card__title {
     color: transparent;
-    background: linear-gradient(to left, #4e00c2, #5ddcff, #3c67e3, #4e00c2);
     background-size: 1000px 100%;
     animation: text 5s linear infinite;
     background-clip: text;
     -webkit-background-clip: text;
+  }
+  .card--color1.card--on .card__title {
+    background-image: linear-gradient(to left, #519cff, #dd31d2, #519cff);
+  }
+  .card--color2.card--on .card__title {
+    background-image: linear-gradient(to left, #00d5ff, #519cff, #00d5ff);
+  }
+  .card--color3.card--on .card__title {
+    background-image: linear-gradient(to left, #0fffd3, #00d5ff, #0fffd3);
   }
 
   .card--off .card__title {
