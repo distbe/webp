@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { tweened } from 'svelte/motion';
+
+  import Result from '$components/Result.svelte';
   import Card from '$components/Card.svelte';
   import InputGroup from '$components/InputGroup.svelte';
   import InputKnob from '$components/InputKnob.svelte';
@@ -7,7 +11,12 @@
   import { download } from '$lib/utils/blob';
   import { loadVips, resize, type Fit } from '$lib/utils/vips';
 
-  $: isDragging = false;
+  let mounted = false;
+  let isDragging = false;
+
+  let loading = false;
+  let progress = tweened(0);
+  let results: [filename: string, beforeSize: number, afterSize: number][] | null = null;
 
   let inputQuality = 100;
 
@@ -15,25 +24,49 @@
   let inputWidth: number | null = null;
   let inputHeight: number | null = null;
   let inputFit: Fit = 'Cover';
-  let progress: number | null = null;
+
+  $: toggledOnSize(onSize);
+  $: onInputSize(inputWidth, inputHeight);
 
   let onScale = false;
   let inputScale: number = 1;
 
+  $: toggledOnScale(onScale);
+  $: onInputScale(inputScale);
+
+  onMount(() => {
+    mounted = true;
+  });
+
   function toggledOnSize(onSize: boolean) {
+    if (!mounted) return;
     if (onSize && onScale) {
       onScale = false;
     }
   }
 
   function toggledOnScale(onScale: boolean) {
+    if (!mounted) return;
     if (onScale && onSize) {
       onSize = false;
     }
   }
 
-  $: toggledOnSize(onSize);
-  $: toggledOnScale(onScale);
+  function onInputSize(width: number | null, height: number | null) {
+    if (!mounted) return;
+    if ((width || height) && !onSize) {
+      onSize = true;
+      toggledOnSize(onSize);
+    }
+  }
+
+  function onInputScale(scale: number | null) {
+    if (!mounted) return;
+    if (scale && !onScale) {
+      onScale = true;
+      toggledOnScale(onScale);
+    }
+  }
 
   function onDragEnter(e: DragEvent) {
     isDragging = true;
@@ -59,30 +92,33 @@
       return;
     }
 
-    progress = 0;
+    loading = true;
+    progress.set(0);
     const vips = await loadVips();
 
     const zip = files.length > 1 ? await import('jszip').then((m) => new m.default()) : null;
     const filenames = new Set<string>();
 
+    const nextResults: [filename: string, beforeSize: number, afterSize: number][] = [];
     for (const [fileIndex, file] of files.entries()) {
-      progress = fileIndex / files.length;
+      progress.set(fileIndex / files.length);
       let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
       if (onSize && (inputWidth || inputHeight)) {
         im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
       } else if (onScale && inputScale) {
         im = im.resize(inputScale, {});
       }
-
-      const quality = ~~inputQuality; // to int
-      const buffer = await im.writeToBuffer(`.webp[Q=${quality}]`);
+      const buffer = await im.writeToBuffer('.webp', {
+        Q: ~~inputQuality // to int
+      });
 
       const blob = new Blob([buffer], { type: 'image/webp' });
       const filename = file.name.replace(/\.[^/.]+$/, '');
 
+      nextResults.push([file.name, file.size, blob.size]);
+
       if (files.length === 1) {
-        download(blob, `${filename}.webp`);
-        progress = 1;
+        done();
         return;
       } else {
         let newFilename = filename;
@@ -99,7 +135,13 @@
       const blob = await zip.generateAsync({ type: 'blob' });
       download(blob, 'images.zip');
     }
-    progress = 1;
+    done();
+
+    function done() {
+      loading = false;
+      progress.set(1);
+      results = nextResults;
+    }
   }
 </script>
 
@@ -171,14 +213,42 @@
     </div>
   </section>
   <section class="flex-1 flex items-center justify-center">
-    <div class=" dropzone space-y-1">
-      <div class="text-white font-light text-center">Drop your images here to start!</div>
-      <div class="text-center">
-        <button class="text-white font-light text-center text-sm underline" on:click={onClickUpload}
-          >or Click to Upload Images</button
-        >
+    {#if loading}
+      <div class="text-white font-light text-center">
+        <div>Converting...</div>
+        <div class="text-2xl">{($progress * 100).toFixed(2)}%</div>
       </div>
-    </div>
+    {:else if results}
+      <div class="dropzone space-y-4">
+        <div class="space-y-1">
+          <div class="text-white text-center">Done!</div>
+          <table>
+            {#each results as [filename, beforeSize, afterSize]}
+              <Result {filename} {beforeSize} {afterSize} />
+            {/each}
+          </table>
+        </div>
+        <div class="space-y-1">
+          <div class="text-white font-light text-center">Drop your images here to start!</div>
+          <div class="text-center">
+            <button
+              class="text-white font-light text-center text-sm underline"
+              on:click={onClickUpload}>or Click to Upload Images</button
+            >
+          </div>
+        </div>
+      </div>
+    {:else}
+      <div class=" dropzone space-y-1">
+        <div class="text-white font-light text-center">Drop your images here to start!</div>
+        <div class="text-center">
+          <button
+            class="text-white font-light text-center text-sm underline"
+            on:click={onClickUpload}>or Click to Upload Images</button
+          >
+        </div>
+      </div>
+    {/if}
   </section>
 </div>
 {#if isDragging}

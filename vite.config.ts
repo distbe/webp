@@ -1,7 +1,6 @@
 /// <reference types="vitest" />
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig, Plugin } from 'vite';
-import copy from 'rollup-plugin-copy'
 
 
 const viteServerConfig: Plugin = {
@@ -21,19 +20,9 @@ const config: UserConfig = {
 	plugins: [
 		viteServerConfig,
 		sveltekit(),
-		copy({
-      targets: [
-        { src: 'node_modules/wasm-vips/lib/**/*', dest: 'static/node_modules/wasm-vips/lib' },
-      ]
-    }),
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
-	},
-	build: {
-		rollupOptions: {
-			external: ['/node_modules/wasm-vips/lib/vips-es6.js'],
-		},
 	},
 };
 

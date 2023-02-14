@@ -14,11 +14,8 @@ export function loadVips(): Promise<Vips> {
     return vipsPromise;
   }
   vipsPromise = (async () => {
-    const Vips: Vips = await import(
-      // @ts-ignore
-      // 'wasm-vips'
-      '/node_modules/wasm-vips/lib/vips-es6.js'
-    ).then((m) => m.default);
+    // @ts-ignore
+    const Vips: Vips = await import('../vips/vips-es6.js').then((m) => m.default);
     return await Vips()
   })()
   return vipsPromise;
