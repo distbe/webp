@@ -1,5 +1,5 @@
 import { _ as __vitePreload } from "../../chunks/preload-helper-f8376bb0.js";
-import { K as assign, L as now, M as loop, N as identity, S as SvelteComponent, i as init, s as safe_not_equal, k as element, q as text, a as space, l as claim_element, m as children, r as claim_text, h as detach, c as claim_space, n as attr, b as insert_hydration, F as append_hydration, u as set_data, C as noop, O as toggle_class, D as create_slot, G as update_slot_base, H as get_all_dirty_from_scope, I as get_slot_changes, f as transition_in, t as transition_out, P as listen, Q as prevent_default, R as svg_element, T as claim_svg_element, U as stop_propagation, V as run_all, v as binding_callbacks, W as set_input_value, X as to_number, Y as add_render_callback, Z as select_option, _ as destroy_each, $ as select_value, a0 as bind, x as create_component, e as empty, a1 as head_selector, y as claim_component, z as mount_component, a2 as add_flush_callback, d as check_outros, A as destroy_component, J as component_subscribe, o as onMount, g as group_outros, a3 as bubble } from "../../chunks/index-5b9570e9.js";
+import { K as assign, L as now, M as loop, N as identity, S as SvelteComponent, i as init, s as safe_not_equal, k as element, q as text, a as space, l as claim_element, m as children, r as claim_text, h as detach, c as claim_space, n as attr, b as insert_hydration, F as append_hydration, u as set_data, C as noop, e as empty, O as toggle_class, D as create_slot, G as update_slot_base, H as get_all_dirty_from_scope, I as get_slot_changes, f as transition_in, t as transition_out, P as listen, Q as prevent_default, R as svg_element, T as claim_svg_element, U as stop_propagation, V as run_all, v as binding_callbacks, W as set_input_value, X as to_number, Y as add_render_callback, Z as select_option, _ as destroy_each, $ as select_value, a0 as bind, x as create_component, a1 as head_selector, y as claim_component, z as mount_component, a2 as add_flush_callback, d as check_outros, A as destroy_component, J as component_subscribe, o as onMount, g as group_outros, a3 as bubble } from "../../chunks/index-5b9570e9.js";
 import { w as writable } from "../../chunks/index-d73721f7.js";
 function is_date(obj) {
   return Object.prototype.toString.call(obj) === "[object Date]";
@@ -98,12 +98,202 @@ function tweened(value, defaults = {}) {
   };
 }
 const Result_svelte_svelte_type_style_lang = "";
+function create_else_block$1(ctx) {
+  let td0;
+  let t0_value = formatBytes(
+    /*beforeSize*/
+    ctx[2]
+  ) + "";
+  let t0;
+  let t1;
+  let td1;
+  let t2;
+  let t3;
+  let td2;
+  let t4_value = formatBytes(
+    /*afterSize*/
+    ctx[3]
+  ) + "";
+  let t4;
+  let t5;
+  let if_block_anchor;
+  function select_block_type_1(ctx2, dirty) {
+    if (
+      /*rate*/
+      ctx2[4] !== null
+    )
+      return create_if_block_1$1;
+    return create_else_block_1;
+  }
+  let current_block_type = select_block_type_1(ctx);
+  let if_block = current_block_type(ctx);
+  return {
+    c() {
+      td0 = element("td");
+      t0 = text(t0_value);
+      t1 = space();
+      td1 = element("td");
+      t2 = text("→");
+      t3 = space();
+      td2 = element("td");
+      t4 = text(t4_value);
+      t5 = space();
+      if_block.c();
+      if_block_anchor = empty();
+      this.h();
+    },
+    l(nodes) {
+      td0 = claim_element(nodes, "TD", { class: true });
+      var td0_nodes = children(td0);
+      t0 = claim_text(td0_nodes, t0_value);
+      td0_nodes.forEach(detach);
+      t1 = claim_space(nodes);
+      td1 = claim_element(nodes, "TD", {});
+      var td1_nodes = children(td1);
+      t2 = claim_text(td1_nodes, "→");
+      td1_nodes.forEach(detach);
+      t3 = claim_space(nodes);
+      td2 = claim_element(nodes, "TD", { class: true });
+      var td2_nodes = children(td2);
+      t4 = claim_text(td2_nodes, t4_value);
+      td2_nodes.forEach(detach);
+      t5 = claim_space(nodes);
+      if_block.l(nodes);
+      if_block_anchor = empty();
+      this.h();
+    },
+    h() {
+      attr(td0, "class", "result__size svelte-1wh6mo4");
+      attr(td2, "class", "result__size svelte-1wh6mo4");
+    },
+    m(target, anchor) {
+      insert_hydration(target, td0, anchor);
+      append_hydration(td0, t0);
+      insert_hydration(target, t1, anchor);
+      insert_hydration(target, td1, anchor);
+      append_hydration(td1, t2);
+      insert_hydration(target, t3, anchor);
+      insert_hydration(target, td2, anchor);
+      append_hydration(td2, t4);
+      insert_hydration(target, t5, anchor);
+      if_block.m(target, anchor);
+      insert_hydration(target, if_block_anchor, anchor);
+    },
+    p(ctx2, dirty) {
+      if (dirty & /*beforeSize*/
+      4 && t0_value !== (t0_value = formatBytes(
+        /*beforeSize*/
+        ctx2[2]
+      ) + ""))
+        set_data(t0, t0_value);
+      if (dirty & /*afterSize*/
+      8 && t4_value !== (t4_value = formatBytes(
+        /*afterSize*/
+        ctx2[3]
+      ) + ""))
+        set_data(t4, t4_value);
+      if (current_block_type === (current_block_type = select_block_type_1(ctx2)) && if_block) {
+        if_block.p(ctx2, dirty);
+      } else {
+        if_block.d(1);
+        if_block = current_block_type(ctx2);
+        if (if_block) {
+          if_block.c();
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      }
+    },
+    d(detaching) {
+      if (detaching)
+        detach(td0);
+      if (detaching)
+        detach(t1);
+      if (detaching)
+        detach(td1);
+      if (detaching)
+        detach(t3);
+      if (detaching)
+        detach(td2);
+      if (detaching)
+        detach(t5);
+      if_block.d(detaching);
+      if (detaching)
+        detach(if_block_anchor);
+    }
+  };
+}
 function create_if_block$2(ctx) {
+  let td;
+  let t;
+  return {
+    c() {
+      td = element("td");
+      t = text(
+        /*error*/
+        ctx[1]
+      );
+      this.h();
+    },
+    l(nodes) {
+      td = claim_element(nodes, "TD", { class: true, colspan: true });
+      var td_nodes = children(td);
+      t = claim_text(
+        td_nodes,
+        /*error*/
+        ctx[1]
+      );
+      td_nodes.forEach(detach);
+      this.h();
+    },
+    h() {
+      attr(td, "class", "result__error svelte-1wh6mo4");
+      attr(td, "colspan", "4");
+    },
+    m(target, anchor) {
+      insert_hydration(target, td, anchor);
+      append_hydration(td, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty & /*error*/
+      2)
+        set_data(
+          t,
+          /*error*/
+          ctx2[1]
+        );
+    },
+    d(detaching) {
+      if (detaching)
+        detach(td);
+    }
+  };
+}
+function create_else_block_1(ctx) {
+  let td;
+  return {
+    c() {
+      td = element("td");
+    },
+    l(nodes) {
+      td = claim_element(nodes, "TD", {});
+      children(td).forEach(detach);
+    },
+    m(target, anchor) {
+      insert_hydration(target, td, anchor);
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching)
+        detach(td);
+    }
+  };
+}
+function create_if_block_1$1(ctx) {
   let td;
   let t0;
   let t1_value = (
     /*rate*/
-    ctx[3].toFixed(2) + ""
+    ctx[4].toFixed(2) + ""
   );
   let t1;
   let t2;
@@ -125,25 +315,25 @@ function create_if_block$2(ctx) {
       this.h();
     },
     h() {
-      attr(td, "class", "result__rate svelte-8spqdc");
+      attr(td, "class", "result__rate svelte-1wh6mo4");
       toggle_class(
         td,
         "result--good",
         /*rate*/
-        ctx[3] > 0
+        ctx[4] > 0
       );
       toggle_class(
         td,
         "result--bad",
         /*rate*/
-        ctx[3] <= 0 && /*rate*/
-        ctx[3] > -0.5
+        ctx[4] <= 0 && /*rate*/
+        ctx[4] > -0.5
       );
       toggle_class(
         td,
         "result--worse",
         /*rate*/
-        ctx[3] <= -0.5
+        ctx[4] <= -0.5
       );
     },
     m(target, anchor) {
@@ -154,35 +344,35 @@ function create_if_block$2(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty & /*rate*/
-      8 && t1_value !== (t1_value = /*rate*/
-      ctx2[3].toFixed(2) + ""))
+      16 && t1_value !== (t1_value = /*rate*/
+      ctx2[4].toFixed(2) + ""))
         set_data(t1, t1_value);
       if (dirty & /*rate*/
-      8) {
+      16) {
         toggle_class(
           td,
           "result--good",
           /*rate*/
-          ctx2[3] > 0
+          ctx2[4] > 0
         );
       }
       if (dirty & /*rate*/
-      8) {
+      16) {
         toggle_class(
           td,
           "result--bad",
           /*rate*/
-          ctx2[3] <= 0 && /*rate*/
-          ctx2[3] > -0.5
+          ctx2[4] <= 0 && /*rate*/
+          ctx2[4] > -0.5
         );
       }
       if (dirty & /*rate*/
-      8) {
+      16) {
         toggle_class(
           td,
           "result--worse",
           /*rate*/
-          ctx2[3] <= -0.5
+          ctx2[4] <= -0.5
         );
       }
     },
@@ -194,106 +384,57 @@ function create_if_block$2(ctx) {
 }
 function create_fragment$6(ctx) {
   let tr;
-  let td0;
+  let td;
   let t0;
   let t1;
-  let td1;
-  let t2_value = formatBytes(
-    /*beforeSize*/
-    ctx[1]
-  ) + "";
-  let t2;
-  let t3;
-  let td2;
-  let t4;
-  let t5;
-  let td3;
-  let t6_value = formatBytes(
-    /*afterSize*/
-    ctx[2]
-  ) + "";
-  let t6;
-  let t7;
-  let if_block = (
-    /*rate*/
-    ctx[3] !== null && create_if_block$2(ctx)
-  );
+  function select_block_type(ctx2, dirty) {
+    if (
+      /*error*/
+      ctx2[1]
+    )
+      return create_if_block$2;
+    return create_else_block$1;
+  }
+  let current_block_type = select_block_type(ctx);
+  let if_block = current_block_type(ctx);
   return {
     c() {
       tr = element("tr");
-      td0 = element("td");
+      td = element("td");
       t0 = text(
         /*filename*/
         ctx[0]
       );
       t1 = space();
-      td1 = element("td");
-      t2 = text(t2_value);
-      t3 = space();
-      td2 = element("td");
-      t4 = text("→");
-      t5 = space();
-      td3 = element("td");
-      t6 = text(t6_value);
-      t7 = space();
-      if (if_block)
-        if_block.c();
+      if_block.c();
       this.h();
     },
     l(nodes) {
       tr = claim_element(nodes, "TR", { class: true });
       var tr_nodes = children(tr);
-      td0 = claim_element(tr_nodes, "TD", { class: true });
-      var td0_nodes = children(td0);
+      td = claim_element(tr_nodes, "TD", { class: true });
+      var td_nodes = children(td);
       t0 = claim_text(
-        td0_nodes,
+        td_nodes,
         /*filename*/
         ctx[0]
       );
-      td0_nodes.forEach(detach);
+      td_nodes.forEach(detach);
       t1 = claim_space(tr_nodes);
-      td1 = claim_element(tr_nodes, "TD", { class: true });
-      var td1_nodes = children(td1);
-      t2 = claim_text(td1_nodes, t2_value);
-      td1_nodes.forEach(detach);
-      t3 = claim_space(tr_nodes);
-      td2 = claim_element(tr_nodes, "TD", {});
-      var td2_nodes = children(td2);
-      t4 = claim_text(td2_nodes, "→");
-      td2_nodes.forEach(detach);
-      t5 = claim_space(tr_nodes);
-      td3 = claim_element(tr_nodes, "TD", { class: true });
-      var td3_nodes = children(td3);
-      t6 = claim_text(td3_nodes, t6_value);
-      td3_nodes.forEach(detach);
-      t7 = claim_space(tr_nodes);
-      if (if_block)
-        if_block.l(tr_nodes);
+      if_block.l(tr_nodes);
       tr_nodes.forEach(detach);
       this.h();
     },
     h() {
-      attr(td0, "class", "result__filename svelte-8spqdc");
-      attr(td1, "class", "result__size svelte-8spqdc");
-      attr(td3, "class", "result__size svelte-8spqdc");
-      attr(tr, "class", "result svelte-8spqdc");
+      attr(td, "class", "result__filename svelte-1wh6mo4");
+      attr(tr, "class", "result svelte-1wh6mo4");
     },
     m(target, anchor) {
       insert_hydration(target, tr, anchor);
-      append_hydration(tr, td0);
-      append_hydration(td0, t0);
+      append_hydration(tr, td);
+      append_hydration(td, t0);
       append_hydration(tr, t1);
-      append_hydration(tr, td1);
-      append_hydration(td1, t2);
-      append_hydration(tr, t3);
-      append_hydration(tr, td2);
-      append_hydration(td2, t4);
-      append_hydration(tr, t5);
-      append_hydration(tr, td3);
-      append_hydration(td3, t6);
-      append_hydration(tr, t7);
-      if (if_block)
-        if_block.m(tr, null);
+      if_block.m(tr, null);
     },
     p(ctx2, [dirty]) {
       if (dirty & /*filename*/
@@ -303,32 +444,15 @@ function create_fragment$6(ctx) {
           /*filename*/
           ctx2[0]
         );
-      if (dirty & /*beforeSize*/
-      2 && t2_value !== (t2_value = formatBytes(
-        /*beforeSize*/
-        ctx2[1]
-      ) + ""))
-        set_data(t2, t2_value);
-      if (dirty & /*afterSize*/
-      4 && t6_value !== (t6_value = formatBytes(
-        /*afterSize*/
-        ctx2[2]
-      ) + ""))
-        set_data(t6, t6_value);
-      if (
-        /*rate*/
-        ctx2[3] !== null
-      ) {
+      if (current_block_type === (current_block_type = select_block_type(ctx2)) && if_block) {
+        if_block.p(ctx2, dirty);
+      } else {
+        if_block.d(1);
+        if_block = current_block_type(ctx2);
         if (if_block) {
-          if_block.p(ctx2, dirty);
-        } else {
-          if_block = create_if_block$2(ctx2);
           if_block.c();
           if_block.m(tr, null);
         }
-      } else if (if_block) {
-        if_block.d(1);
-        if_block = null;
       }
     },
     i: noop,
@@ -336,8 +460,7 @@ function create_fragment$6(ctx) {
     d(detaching) {
       if (detaching)
         detach(tr);
-      if (if_block)
-        if_block.d();
+      if_block.d();
     }
   };
 }
@@ -352,28 +475,36 @@ function formatBytes(size) {
 function instance$6($$self, $$props, $$invalidate) {
   let rate;
   let { filename } = $$props;
+  let { error = null } = $$props;
   let { beforeSize } = $$props;
   let { afterSize } = $$props;
   $$self.$$set = ($$props2) => {
     if ("filename" in $$props2)
       $$invalidate(0, filename = $$props2.filename);
+    if ("error" in $$props2)
+      $$invalidate(1, error = $$props2.error);
     if ("beforeSize" in $$props2)
-      $$invalidate(1, beforeSize = $$props2.beforeSize);
+      $$invalidate(2, beforeSize = $$props2.beforeSize);
     if ("afterSize" in $$props2)
-      $$invalidate(2, afterSize = $$props2.afterSize);
+      $$invalidate(3, afterSize = $$props2.afterSize);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty & /*beforeSize, afterSize*/
-    6) {
-      $$invalidate(3, rate = beforeSize === 0 ? null : (1 - afterSize / beforeSize) * 100);
+    12) {
+      $$invalidate(4, rate = beforeSize === 0 ? null : (1 - afterSize / beforeSize) * 100);
     }
   };
-  return [filename, beforeSize, afterSize, rate];
+  return [filename, error, beforeSize, afterSize, rate];
 }
 class Result extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$6, create_fragment$6, safe_not_equal, { filename: 0, beforeSize: 1, afterSize: 2 });
+    init(this, options, instance$6, create_fragment$6, safe_not_equal, {
+      filename: 0,
+      error: 1,
+      beforeSize: 2,
+      afterSize: 3
+    });
   }
 }
 const Card_svelte_svelte_type_style_lang = "";
@@ -1498,9 +1629,10 @@ function embed([width, height], [targetWidth, targetHeight]) {
 const _page_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[31] = list[i][0];
-  child_ctx[32] = list[i][1];
-  child_ctx[33] = list[i][2];
+  child_ctx[32] = list[i][0];
+  child_ctx[33] = list[i][1];
+  child_ctx[34] = list[i][2];
+  child_ctx[35] = list[i][3];
   return child_ctx;
 }
 function create_default_slot_7(ctx) {
@@ -1636,7 +1768,7 @@ function create_default_slot_6(ctx) {
       const inputgroup_changes = {};
       if (dirty[0] & /*inputQuality*/
       256 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         inputgroup_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup.$set(inputgroup_changes);
@@ -1772,7 +1904,7 @@ function create_default_slot_3(ctx) {
     ctx[21](value);
   }
   let inputselect_props = {
-    options: ["Contain", "Cover", "Fill", "Inside", "Outside"]
+    options: ["Cover", "Contain", "Fill", "Inside", "Outside"]
   };
   if (
     /*inputFit*/
@@ -1886,21 +2018,21 @@ function create_default_slot_2(ctx) {
       const inputgroup0_changes = {};
       if (dirty[0] & /*inputWidth*/
       2 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         inputgroup0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup0.$set(inputgroup0_changes);
       const inputgroup1_changes = {};
       if (dirty[0] & /*inputHeight*/
       4 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         inputgroup1_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup1.$set(inputgroup1_changes);
       const inputgroup2_changes = {};
       if (dirty[0] & /*inputFit*/
       512 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         inputgroup2_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup2.$set(inputgroup2_changes);
@@ -2018,7 +2150,7 @@ function create_default_slot(ctx) {
       const inputgroup_changes = {};
       if (dirty[0] & /*inputScale*/
       16 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         inputgroup_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup.$set(inputgroup_changes);
@@ -2041,192 +2173,101 @@ function create_default_slot(ctx) {
   };
 }
 function create_else_block(ctx) {
-  let div2;
-  let div0;
-  let t0;
-  let t1;
-  let div1;
-  let button;
-  let t2;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      div2 = element("div");
-      div0 = element("div");
-      t0 = text("Drop your images here to start!");
-      t1 = space();
-      div1 = element("div");
-      button = element("button");
-      t2 = text("or Click to Upload Images");
-      this.h();
-    },
-    l(nodes) {
-      div2 = claim_element(nodes, "DIV", { class: true });
-      var div2_nodes = children(div2);
-      div0 = claim_element(div2_nodes, "DIV", { class: true });
-      var div0_nodes = children(div0);
-      t0 = claim_text(div0_nodes, "Drop your images here to start!");
-      div0_nodes.forEach(detach);
-      t1 = claim_space(div2_nodes);
-      div1 = claim_element(div2_nodes, "DIV", { class: true });
-      var div1_nodes = children(div1);
-      button = claim_element(div1_nodes, "BUTTON", { class: true });
-      var button_nodes = children(button);
-      t2 = claim_text(button_nodes, "or Click to Upload Images");
-      button_nodes.forEach(detach);
-      div1_nodes.forEach(detach);
-      div2_nodes.forEach(detach);
-      this.h();
-    },
-    h() {
-      attr(div0, "class", "text-white font-light text-center");
-      attr(button, "class", "text-white font-light text-center text-sm underline");
-      attr(div1, "class", "text-center");
-      attr(div2, "class", "dropzone space-y-1 svelte-1hi61xe");
-    },
-    m(target, anchor) {
-      insert_hydration(target, div2, anchor);
-      append_hydration(div2, div0);
-      append_hydration(div0, t0);
-      append_hydration(div2, t1);
-      append_hydration(div2, div1);
-      append_hydration(div1, button);
-      append_hydration(button, t2);
-      if (!mounted) {
-        dispose = listen(
-          button,
-          "click",
-          /*onClickUpload*/
-          ctx[14]
-        );
-        mounted = true;
-      }
-    },
-    p: noop,
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(div2);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_if_block_2(ctx) {
   let div5;
-  let div1;
-  let div0;
   let t0;
-  let t1;
-  let table;
-  let t2;
   let div4;
   let div2;
+  let div0;
+  let t1;
+  let t2;
+  let div1;
+  let button;
   let t3;
   let t4;
   let div3;
-  let button;
   let t5;
   let current;
   let mounted;
   let dispose;
-  let each_value = (
+  let if_block = (
     /*results*/
-    ctx[7]
+    ctx[7] && create_if_block_2(ctx)
   );
-  let each_blocks = [];
-  for (let i = 0; i < each_value.length; i += 1) {
-    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-  }
-  const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
-    each_blocks[i] = null;
-  });
   return {
     c() {
       div5 = element("div");
-      div1 = element("div");
-      div0 = element("div");
-      t0 = text("Done!");
-      t1 = space();
-      table = element("table");
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].c();
-      }
-      t2 = space();
+      if (if_block)
+        if_block.c();
+      t0 = space();
       div4 = element("div");
       div2 = element("div");
-      t3 = text("Drop your images here to start!");
+      div0 = element("div");
+      t1 = text("Drop your images here to start!");
+      t2 = space();
+      div1 = element("div");
+      button = element("button");
+      t3 = text("or Click to Upload Images");
       t4 = space();
       div3 = element("div");
-      button = element("button");
-      t5 = text("or Click to Upload Images");
+      t5 = text("Support JPG, PNG, GIF, TIFF, WEBP");
       this.h();
     },
     l(nodes) {
       div5 = claim_element(nodes, "DIV", { class: true });
       var div5_nodes = children(div5);
-      div1 = claim_element(div5_nodes, "DIV", { class: true });
-      var div1_nodes = children(div1);
-      div0 = claim_element(div1_nodes, "DIV", { class: true });
-      var div0_nodes = children(div0);
-      t0 = claim_text(div0_nodes, "Done!");
-      div0_nodes.forEach(detach);
-      t1 = claim_space(div1_nodes);
-      table = claim_element(div1_nodes, "TABLE", {});
-      var table_nodes = children(table);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].l(table_nodes);
-      }
-      table_nodes.forEach(detach);
-      div1_nodes.forEach(detach);
-      t2 = claim_space(div5_nodes);
+      if (if_block)
+        if_block.l(div5_nodes);
+      t0 = claim_space(div5_nodes);
       div4 = claim_element(div5_nodes, "DIV", { class: true });
       var div4_nodes = children(div4);
-      div2 = claim_element(div4_nodes, "DIV", { class: true });
+      div2 = claim_element(div4_nodes, "DIV", {});
       var div2_nodes = children(div2);
-      t3 = claim_text(div2_nodes, "Drop your images here to start!");
+      div0 = claim_element(div2_nodes, "DIV", { class: true });
+      var div0_nodes = children(div0);
+      t1 = claim_text(div0_nodes, "Drop your images here to start!");
+      div0_nodes.forEach(detach);
+      t2 = claim_space(div2_nodes);
+      div1 = claim_element(div2_nodes, "DIV", { class: true });
+      var div1_nodes = children(div1);
+      button = claim_element(div1_nodes, "BUTTON", { class: true });
+      var button_nodes = children(button);
+      t3 = claim_text(button_nodes, "or Click to Upload Images");
+      button_nodes.forEach(detach);
+      div1_nodes.forEach(detach);
       div2_nodes.forEach(detach);
       t4 = claim_space(div4_nodes);
       div3 = claim_element(div4_nodes, "DIV", { class: true });
       var div3_nodes = children(div3);
-      button = claim_element(div3_nodes, "BUTTON", { class: true });
-      var button_nodes = children(button);
-      t5 = claim_text(button_nodes, "or Click to Upload Images");
-      button_nodes.forEach(detach);
+      t5 = claim_text(div3_nodes, "Support JPG, PNG, GIF, TIFF, WEBP");
       div3_nodes.forEach(detach);
       div4_nodes.forEach(detach);
       div5_nodes.forEach(detach);
       this.h();
     },
     h() {
-      attr(div0, "class", "text-white text-center");
-      attr(div1, "class", "space-y-1");
-      attr(div2, "class", "text-white font-light text-center");
-      attr(button, "class", "text-white font-light text-center text-sm underline");
-      attr(div3, "class", "text-center");
-      attr(div4, "class", "space-y-1");
+      attr(div0, "class", "text-white font-light text-center");
+      attr(button, "class", "text-white font-light text-sm underline leading-tight");
+      attr(div1, "class", "text-center");
+      attr(div3, "class", "text-white font-light text-center text-sm text-opacity-70");
+      attr(div4, "class", "space-y-3");
       attr(div5, "class", "dropzone space-y-4 svelte-1hi61xe");
     },
     m(target, anchor) {
       insert_hydration(target, div5, anchor);
-      append_hydration(div5, div1);
-      append_hydration(div1, div0);
-      append_hydration(div0, t0);
-      append_hydration(div1, t1);
-      append_hydration(div1, table);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        each_blocks[i].m(table, null);
-      }
-      append_hydration(div5, t2);
+      if (if_block)
+        if_block.m(div5, null);
+      append_hydration(div5, t0);
       append_hydration(div5, div4);
       append_hydration(div4, div2);
-      append_hydration(div2, t3);
+      append_hydration(div2, div0);
+      append_hydration(div0, t1);
+      append_hydration(div2, t2);
+      append_hydration(div2, div1);
+      append_hydration(div1, button);
+      append_hydration(button, t3);
       append_hydration(div4, t4);
       append_hydration(div4, div3);
-      append_hydration(div3, button);
-      append_hydration(button, t5);
+      append_hydration(div3, t5);
       current = true;
       if (!mounted) {
         dispose = listen(
@@ -2239,49 +2280,45 @@ function create_if_block_2(ctx) {
       }
     },
     p(ctx2, dirty) {
-      if (dirty[0] & /*results*/
-      128) {
-        each_value = /*results*/
-        ctx2[7];
-        let i;
-        for (i = 0; i < each_value.length; i += 1) {
-          const child_ctx = get_each_context(ctx2, each_value, i);
-          if (each_blocks[i]) {
-            each_blocks[i].p(child_ctx, dirty);
-            transition_in(each_blocks[i], 1);
-          } else {
-            each_blocks[i] = create_each_block(child_ctx);
-            each_blocks[i].c();
-            transition_in(each_blocks[i], 1);
-            each_blocks[i].m(table, null);
+      if (
+        /*results*/
+        ctx2[7]
+      ) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+          if (dirty[0] & /*results*/
+          128) {
+            transition_in(if_block, 1);
           }
+        } else {
+          if_block = create_if_block_2(ctx2);
+          if_block.c();
+          transition_in(if_block, 1);
+          if_block.m(div5, t0);
         }
+      } else if (if_block) {
         group_outros();
-        for (i = each_value.length; i < each_blocks.length; i += 1) {
-          out(i);
-        }
+        transition_out(if_block, 1, 1, () => {
+          if_block = null;
+        });
         check_outros();
       }
     },
     i(local) {
       if (current)
         return;
-      for (let i = 0; i < each_value.length; i += 1) {
-        transition_in(each_blocks[i]);
-      }
+      transition_in(if_block);
       current = true;
     },
     o(local) {
-      each_blocks = each_blocks.filter(Boolean);
-      for (let i = 0; i < each_blocks.length; i += 1) {
-        transition_out(each_blocks[i]);
-      }
+      transition_out(if_block);
       current = false;
     },
     d(detaching) {
       if (detaching)
         detach(div5);
-      destroy_each(each_blocks, detaching);
+      if (if_block)
+        if_block.d();
       mounted = false;
       dispose();
     }
@@ -2353,6 +2390,115 @@ function create_if_block_1(ctx) {
     }
   };
 }
+function create_if_block_2(ctx) {
+  let div1;
+  let div0;
+  let t0;
+  let t1;
+  let table;
+  let current;
+  let each_value = (
+    /*results*/
+    ctx[7]
+  );
+  let each_blocks = [];
+  for (let i = 0; i < each_value.length; i += 1) {
+    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+  }
+  const out = (i) => transition_out(each_blocks[i], 1, 1, () => {
+    each_blocks[i] = null;
+  });
+  return {
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      t0 = text("Done!");
+      t1 = space();
+      table = element("table");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      this.h();
+    },
+    l(nodes) {
+      div1 = claim_element(nodes, "DIV", { class: true });
+      var div1_nodes = children(div1);
+      div0 = claim_element(div1_nodes, "DIV", { class: true });
+      var div0_nodes = children(div0);
+      t0 = claim_text(div0_nodes, "Done!");
+      div0_nodes.forEach(detach);
+      t1 = claim_space(div1_nodes);
+      table = claim_element(div1_nodes, "TABLE", {});
+      var table_nodes = children(table);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].l(table_nodes);
+      }
+      table_nodes.forEach(detach);
+      div1_nodes.forEach(detach);
+      this.h();
+    },
+    h() {
+      attr(div0, "class", "text-white text-center");
+      attr(div1, "class", "space-y-1");
+    },
+    m(target, anchor) {
+      insert_hydration(target, div1, anchor);
+      append_hydration(div1, div0);
+      append_hydration(div0, t0);
+      append_hydration(div1, t1);
+      append_hydration(div1, table);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(table, null);
+      }
+      current = true;
+    },
+    p(ctx2, dirty) {
+      if (dirty[0] & /*results*/
+      128) {
+        each_value = /*results*/
+        ctx2[7];
+        let i;
+        for (i = 0; i < each_value.length; i += 1) {
+          const child_ctx = get_each_context(ctx2, each_value, i);
+          if (each_blocks[i]) {
+            each_blocks[i].p(child_ctx, dirty);
+            transition_in(each_blocks[i], 1);
+          } else {
+            each_blocks[i] = create_each_block(child_ctx);
+            each_blocks[i].c();
+            transition_in(each_blocks[i], 1);
+            each_blocks[i].m(table, null);
+          }
+        }
+        group_outros();
+        for (i = each_value.length; i < each_blocks.length; i += 1) {
+          out(i);
+        }
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      for (let i = 0; i < each_value.length; i += 1) {
+        transition_in(each_blocks[i]);
+      }
+      current = true;
+    },
+    o(local) {
+      each_blocks = each_blocks.filter(Boolean);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        transition_out(each_blocks[i]);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div1);
+      destroy_each(each_blocks, detaching);
+    }
+  };
+}
 function create_each_block(ctx) {
   let result;
   let current;
@@ -2360,15 +2506,19 @@ function create_each_block(ctx) {
     props: {
       filename: (
         /*filename*/
-        ctx[31]
+        ctx[32]
+      ),
+      error: (
+        /*error*/
+        ctx[33]
       ),
       beforeSize: (
         /*beforeSize*/
-        ctx[32]
+        ctx[34]
       ),
       afterSize: (
         /*afterSize*/
-        ctx[33]
+        ctx[35]
       )
     }
   });
@@ -2388,15 +2538,19 @@ function create_each_block(ctx) {
       if (dirty[0] & /*results*/
       128)
         result_changes.filename = /*filename*/
-        ctx2[31];
-      if (dirty[0] & /*results*/
-      128)
-        result_changes.beforeSize = /*beforeSize*/
         ctx2[32];
       if (dirty[0] & /*results*/
       128)
-        result_changes.afterSize = /*afterSize*/
+        result_changes.error = /*error*/
         ctx2[33];
+      if (dirty[0] & /*results*/
+      128)
+        result_changes.beforeSize = /*beforeSize*/
+        ctx2[34];
+      if (dirty[0] & /*results*/
+      128)
+        result_changes.afterSize = /*afterSize*/
+        ctx2[35];
       result.$set(result_changes);
     },
     i(local) {
@@ -2546,7 +2700,7 @@ function create_fragment(ctx) {
   }
   card2 = new Card({ props: card2_props });
   binding_callbacks.push(() => bind(card2, "on", card2_on_binding));
-  const if_block_creators = [create_if_block_1, create_if_block_2, create_else_block];
+  const if_block_creators = [create_if_block_1, create_else_block];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -2554,12 +2708,7 @@ function create_fragment(ctx) {
       ctx2[6]
     )
       return 0;
-    if (
-      /*results*/
-      ctx2[7]
-    )
-      return 1;
-    return 2;
+    return 1;
   }
   current_block_type_index = select_block_type(ctx);
   if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
@@ -2788,14 +2937,14 @@ function create_fragment(ctx) {
       const card0_changes = {};
       if (dirty[0] & /*inputQuality*/
       256 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         card0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       card0.$set(card0_changes);
       const card1_changes = {};
       if (dirty[0] & /*inputFit, inputHeight, inputWidth*/
       518 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         card1_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_on && dirty[0] & /*onSize*/
@@ -2809,7 +2958,7 @@ function create_fragment(ctx) {
       const card2_changes = {};
       if (dirty[0] & /*inputScale*/
       16 | dirty[1] & /*$$scope*/
-      32) {
+      128) {
         card2_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_on_1 && dirty[0] & /*onScale*/
@@ -2988,27 +3137,40 @@ function instance($$self, $$props, $$invalidate) {
     const nextResults = [];
     for (const [fileIndex, file] of files.entries()) {
       progress.set(fileIndex / files.length);
-      let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
-      if (onSize && (inputWidth || inputHeight)) {
-        im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
-      } else if (onScale && inputScale) {
-        im = im.resize(inputScale, {});
-      }
-      const buffer = await im.writeToBuffer(".webp", { Q: ~~inputQuality });
-      const blob = new Blob([buffer], { type: "image/webp" });
-      const filename = file.name.replace(/\.[^/.]+$/, "");
-      nextResults.push([file.name, file.size, blob.size]);
-      if (files.length === 1) {
-        done();
-        return;
-      } else {
-        let newFilename = filename;
-        let i = 1;
-        while (filenames.has(newFilename)) {
-          newFilename = `${filename} (${i})`;
-          i++;
+      let blob = null;
+      let errorMessage2 = null;
+      try {
+        let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
+        if (onSize && (inputWidth || inputHeight)) {
+          im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
+        } else if (onScale && inputScale) {
+          im = im.resize(inputScale, {});
         }
-        zip.file(`${newFilename}.webp`, blob);
+        const buffer = await im.writeToBuffer(".webp", { Q: ~~inputQuality });
+        blob = new Blob([buffer], { type: "image/webp" });
+      } catch (e) {
+        if (e.message.includes("unable to load from buffer")) {
+          errorMessage2 = "Unsupported image format!";
+        } else {
+          errorMessage2 = e.message;
+        }
+      }
+      nextResults.push([file.name, errorMessage2, file.size, (blob == null ? void 0 : blob.size) ?? 0]);
+      if (blob) {
+        const filename = file.name.replace(/\.[^/.]+$/, "");
+        if (files.length === 1) {
+          download(blob, `${filename}.webp`);
+          done();
+          return;
+        } else {
+          let newFilename = filename;
+          let i = 1;
+          while (filenames.has(newFilename)) {
+            newFilename = `${filename} (${i})`;
+            i++;
+          }
+          zip.file(`${newFilename}.webp`, blob);
+        }
       }
     }
     if (zip) {
