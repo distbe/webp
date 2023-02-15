@@ -2921,7 +2921,7 @@ function create_fragment(ctx) {
       attr(meta2, "content", "/ms-icon-144x144.png");
       attr(meta3, "name", "theme-color");
       attr(meta3, "content", "#ffffff");
-      attr(div0, "class", "flex gap-8 items-center justify-center");
+      attr(div0, "class", "flex gap-8 items-center justify-center flex-wrap");
       attr(div1, "class", "container mx-auto px-4");
       attr(section1, "class", "flex-1 flex items-center justify-center");
       attr(div2, "class", "flex flex-col h-full gap-y-6");

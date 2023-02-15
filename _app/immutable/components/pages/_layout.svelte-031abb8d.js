@@ -85,7 +85,7 @@ function create_fragment(ctx) {
         default_slot.l(main_nodes);
       main_nodes.forEach(detach);
       t2 = claim_space(div5_nodes);
-      footer = claim_element(div5_nodes, "FOOTER", {});
+      footer = claim_element(div5_nodes, "FOOTER", { class: true });
       var footer_nodes = children(footer);
       div4 = claim_element(footer_nodes, "DIV", { class: true });
       var div4_nodes = children(div4);
@@ -133,6 +133,7 @@ function create_fragment(ctx) {
       attr(div2, "class", "flex items-center gap-x-1");
       attr(div3, "class", "absolute right-0 bottom-0 p-2 text-sm text-white text-opacity-30 select-none");
       attr(div4, "class", "container mx-auto px-4 flex justify-center py-2");
+      attr(footer, "class", "relative");
       attr(div5, "class", "flex flex-col min-h-screen h-px");
     },
     m(target, anchor) {
@@ -206,7 +207,7 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const version = "0.1.0";
+  const version = "0.1.1";
   $$self.$$set = ($$props2) => {
     if ("$$scope" in $$props2)
       $$invalidate(1, $$scope = $$props2.$$scope);
