@@ -17,7 +17,7 @@
     <slot />
   </main>
 
-  <footer>
+  <footer class="relative">
     <div class="container mx-auto px-4 flex justify-center py-2">
       <div class="flex items-center gap-x-1">
         <a href="https://github.com/distbe" target="_blank" rel="noopener noreferrer"

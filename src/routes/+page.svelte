@@ -204,7 +204,7 @@
 <div class="flex flex-col h-full gap-y-6">
   <section>
     <div class="container mx-auto px-4">
-      <div class="flex gap-8 items-center justify-center">
+      <div class="flex gap-8 items-center justify-center flex-wrap">
         <Card title="Quality" on={true} disabled>
           <InputGroup label="Quality">
             <div class="space-y-4">
