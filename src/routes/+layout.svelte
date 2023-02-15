@@ -2,6 +2,8 @@
   import '$assets/css/app.css';
   import logo from '$assets/images/logo.svg';
   import { page } from '$app/stores';
+
+  const version = VERSION;
 </script>
 
 <div class="flex flex-col min-h-screen h-px">
@@ -22,6 +24,9 @@
           ><img src={logo} alt="dist.be" class="w-[54px] h-[24px]" /></a
         >
         <div class="text-white font-light text-sm text-opacity-75">&copy; 2023</div>
+      </div>
+      <div class="absolute right-0 bottom-0 p-2 text-sm text-white text-opacity-30 select-none">
+        v{version}
       </div>
     </div>
   </footer>

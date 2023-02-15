@@ -1,6 +1,11 @@
 /// <reference types="vitest" />
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig, Plugin } from 'vite';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const file = fileURLToPath(new URL('package.json', import.meta.url));
+const pkg = JSON.parse(readFileSync(file, 'utf8'));
 
 
 const viteServerConfig: Plugin = {
@@ -23,6 +28,9 @@ const config: UserConfig = {
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	define: {
+		VERSION: JSON.stringify(pkg.version),
 	},
 };
 
