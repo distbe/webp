@@ -10,6 +10,7 @@
   import InputSelect from '$components/InputSelect.svelte';
   import { download } from '$lib/utils/blob';
   import { loadVips, resize, type Fit } from '$lib/utils/vips';
+  import { svgToBlob } from '$lib/utils/svg';
 
   type InlineResult = [
     filename: string,
@@ -115,7 +116,13 @@
       let blob: Blob | null = null;
       let errorMessage: string | null = null;
       try {
-        let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
+        let input: ArrayBuffer;
+        if (file.type === 'image/svg+xml') {
+          input = await svgToBlob(file).then((b) => b.arrayBuffer());
+        } else {
+          input = await file.arrayBuffer();
+        }
+        let im = vips.Image.newFromBuffer(input, file.name);
         if (onSize && (inputWidth || inputHeight)) {
           im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
         } else if (onScale && inputScale) {
@@ -265,7 +272,7 @@
             </div>
           </div>
           <div class="text-white font-light text-center text-sm text-opacity-70">
-            Supports JPG, PNG, GIF, TIFF, WEBP.
+            Supports JPG, PNG, GIF, TIFF, WEBP, SVG.
           </div>
         </div>
       </div>
