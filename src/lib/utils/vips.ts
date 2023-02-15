@@ -10,12 +10,13 @@ type Size = [width: number, height: number];
 
 let vipsPromise = null as Promise<Vips> | null;
 export function loadVips(): Promise<Vips> {
+  const moduleUrl = '/vips/vips-es6.js'
   if (vipsPromise) {
     return vipsPromise;
   }
   vipsPromise = (async () => {
     // @ts-ignore
-    const Vips: Vips = await import('../vips/vips-es6.js').then((m) => m.default);
+    const Vips: Vips = await import(moduleUrl).then((m) => m.default);
     return await Vips()
   })()
   return vipsPromise;
