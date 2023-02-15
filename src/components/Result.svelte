@@ -1,5 +1,6 @@
 <script lang="ts">
   export let filename: string;
+  export let error: string | null = null;
   export let beforeSize: number;
   export let afterSize: number;
 
@@ -16,18 +17,26 @@
 
 <tr class="result">
   <td class="result__filename">{filename}</td>
-  <td class="result__size">{formatBytes(beforeSize)}</td>
-  <td>→</td>
-  <td class="result__size">{formatBytes(afterSize)}</td>
-  {#if rate !== null}
-    <td
-      class="result__rate"
-      class:result--good={rate > 0}
-      class:result--bad={rate <= 0 && rate > -0.5}
-      class:result--worse={rate <= -0.5}
-    >
-      ({rate.toFixed(2)}%)
+  {#if error}
+    <td class="result__error" colspan="4">
+      {error}
     </td>
+  {:else}
+    <td class="result__size">{formatBytes(beforeSize)}</td>
+    <td>→</td>
+    <td class="result__size">{formatBytes(afterSize)}</td>
+    {#if rate !== null}
+      <td
+        class="result__rate"
+        class:result--good={rate > 0}
+        class:result--bad={rate <= 0 && rate > -0.5}
+        class:result--worse={rate <= -0.5}
+      >
+        ({rate.toFixed(2)}%)
+      </td>
+    {:else}
+      <td />
+    {/if}
   {/if}
 </tr>
 
@@ -40,6 +49,9 @@
   }
   .result__size {
     @apply text-right px-1;
+  }
+  .result__error {
+    @apply text-red-500 text-center px-1;
   }
   .result__rate {
     @apply text-left px-1;

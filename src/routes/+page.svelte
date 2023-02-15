@@ -11,12 +11,20 @@
   import { download } from '$lib/utils/blob';
   import { loadVips, resize, type Fit } from '$lib/utils/vips';
 
+  type InlineResult = [
+    filename: string,
+    error: string | null,
+    beforeSize: number,
+    afterSize: number
+  ];
+
   let mounted = false;
   let isDragging = false;
 
+  let errorMessage: string | null = null;
   let loading = false;
   let progress = tweened(0);
-  let results: [filename: string, beforeSize: number, afterSize: number][] | null = null;
+  let results: InlineResult[] | null = null;
 
   let inputQuality = 100;
 
@@ -93,41 +101,55 @@
     }
 
     loading = true;
+    errorMessage = null;
     progress.set(0);
     const vips = await loadVips();
 
     const zip = files.length > 1 ? await import('jszip').then((m) => new m.default()) : null;
     const filenames = new Set<string>();
 
-    const nextResults: [filename: string, beforeSize: number, afterSize: number][] = [];
+    const nextResults: InlineResult[] = [];
     for (const [fileIndex, file] of files.entries()) {
       progress.set(fileIndex / files.length);
-      let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
-      if (onSize && (inputWidth || inputHeight)) {
-        im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
-      } else if (onScale && inputScale) {
-        im = im.resize(inputScale, {});
-      }
-      const buffer = await im.writeToBuffer('.webp', {
-        Q: ~~inputQuality // to int
-      });
 
-      const blob = new Blob([buffer], { type: 'image/webp' });
-      const filename = file.name.replace(/\.[^/.]+$/, '');
-
-      nextResults.push([file.name, file.size, blob.size]);
-
-      if (files.length === 1) {
-        done();
-        return;
-      } else {
-        let newFilename = filename;
-        let i = 1;
-        while (filenames.has(newFilename)) {
-          newFilename = `${filename} (${i})`;
-          i++;
+      let blob: Blob | null = null;
+      let errorMessage: string | null = null;
+      try {
+        let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
+        if (onSize && (inputWidth || inputHeight)) {
+          im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
+        } else if (onScale && inputScale) {
+          im = im.resize(inputScale, {});
         }
-        zip!.file(`${newFilename}.webp`, blob);
+        const buffer = await im.writeToBuffer('.webp', {
+          Q: ~~inputQuality // to int
+        });
+        blob = new Blob([buffer], { type: 'image/webp' });
+      } catch (e) {
+        if ((e as any).message.includes('unable to load from buffer')) {
+          errorMessage = 'Unsupported image format!';
+        } else {
+          errorMessage = (e as any).message;
+        }
+      }
+
+      nextResults.push([file.name, errorMessage, file.size, blob?.size ?? 0]);
+
+      if (blob) {
+        const filename = file.name.replace(/\.[^/.]+$/, '');
+        if (files.length === 1) {
+          download(blob, `${filename}.webp`);
+          done();
+          return;
+        } else {
+          let newFilename = filename;
+          let i = 1;
+          while (filenames.has(newFilename)) {
+            newFilename = `${filename} (${i})`;
+            i++;
+          }
+          zip!.file(`${newFilename}.webp`, blob);
+        }
       }
     }
 
@@ -196,7 +218,7 @@
             </InputGroup>
             <InputGroup label="Fit">
               <InputSelect
-                options={['Contain', 'Cover', 'Fill', 'Inside', 'Outside']}
+                options={['Cover', 'Contain', 'Fill', 'Inside', 'Outside']}
                 bind:value={inputFit}
               />
             </InputGroup>
@@ -218,34 +240,31 @@
         <div>Converting...</div>
         <div class="text-2xl">{($progress * 100).toFixed(2)}%</div>
       </div>
-    {:else if results}
-      <div class="dropzone space-y-4">
-        <div class="space-y-1">
-          <div class="text-white text-center">Done!</div>
-          <table>
-            {#each results as [filename, beforeSize, afterSize]}
-              <Result {filename} {beforeSize} {afterSize} />
-            {/each}
-          </table>
-        </div>
-        <div class="space-y-1">
-          <div class="text-white font-light text-center">Drop your images here to start!</div>
-          <div class="text-center">
-            <button
-              class="text-white font-light text-center text-sm underline"
-              on:click={onClickUpload}>or Click to Upload Images</button
-            >
-          </div>
-        </div>
-      </div>
     {:else}
-      <div class=" dropzone space-y-1">
-        <div class="text-white font-light text-center">Drop your images here to start!</div>
-        <div class="text-center">
-          <button
-            class="text-white font-light text-center text-sm underline"
-            on:click={onClickUpload}>or Click to Upload Images</button
-          >
+      <div class="dropzone space-y-4">
+        {#if results}
+          <div class="space-y-1">
+            <div class="text-white text-center">Done!</div>
+            <table>
+              {#each results as [filename, error, beforeSize, afterSize]}
+                <Result {filename} {error} {beforeSize} {afterSize} />
+              {/each}
+            </table>
+          </div>
+        {/if}
+        <div class="space-y-3">
+          <div>
+            <div class="text-white font-light text-center">Drop your images here to start!</div>
+            <div class="text-center">
+              <button
+                class="text-white font-light text-sm underline leading-tight"
+                on:click={onClickUpload}>or Click to Upload Images</button
+              >
+            </div>
+          </div>
+          <div class="text-white font-light text-center text-sm text-opacity-70">
+            Support JPG, PNG, GIF, TIFF, WEBP
+          </div>
         </div>
       </div>
     {/if}
