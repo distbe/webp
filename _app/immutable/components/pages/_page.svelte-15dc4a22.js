@@ -1626,6 +1626,45 @@ function embed([width, height], [targetWidth, targetHeight]) {
     ~~((targetHeight - height) / 2)
   ];
 }
+function svgImageSize(svg) {
+  var _a, _b;
+  const width = (_a = svg.match(/width="(\d+)"/)) == null ? void 0 : _a[1];
+  const height = (_b = svg.match(/height="(\d+)"/)) == null ? void 0 : _b[1];
+  if (!width || !height) {
+    const match = svg.match(/viewBox="0 0 (\d+) (\d+)"/);
+    if (match) {
+      return { width: +match[1], height: +match[2] };
+    }
+  }
+  return { width: width ? +width : 0, height: height ? +height : 0 };
+}
+async function svgToBlob(file) {
+  const svg = await file.text();
+  const { width, height } = svgImageSize(svg);
+  const url = await new Promise((resolve) => {
+    const image = new Image();
+    const xml = window.btoa(unescape(encodeURIComponent(svg)));
+    image.src = "data:image/svg+xml;base64," + xml;
+    image.onload = function() {
+      const canvas = document.createElement("canvas");
+      canvas.width = width ?? 640;
+      canvas.height = height ?? 480;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(image, 0, 0, width ?? 640, height ?? 480);
+      }
+      resolve(canvas.toDataURL("image/png"));
+    };
+  });
+  const parts = url.split(";base64,");
+  const raw = window.atob(parts[1]);
+  const rawLength = raw.length;
+  const uInt8Array = new Uint8Array(rawLength);
+  for (let i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+  return new Blob([uInt8Array], { type: "image/png" });
+}
 const _page_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
@@ -2202,14 +2241,14 @@ function create_else_block(ctx) {
       div4 = element("div");
       div2 = element("div");
       div0 = element("div");
-      t1 = text("Drop your images here to start!");
+      t1 = text("Drop your images here to get started!");
       t2 = space();
       div1 = element("div");
       button = element("button");
-      t3 = text("or Click to Upload Images");
+      t3 = text("or click to upload images");
       t4 = space();
       div3 = element("div");
-      t5 = text("Support JPG, PNG, GIF, TIFF, WEBP");
+      t5 = text("Supports JPG, PNG, GIF, TIFF, WEBP, SVG.");
       this.h();
     },
     l(nodes) {
@@ -2224,21 +2263,21 @@ function create_else_block(ctx) {
       var div2_nodes = children(div2);
       div0 = claim_element(div2_nodes, "DIV", { class: true });
       var div0_nodes = children(div0);
-      t1 = claim_text(div0_nodes, "Drop your images here to start!");
+      t1 = claim_text(div0_nodes, "Drop your images here to get started!");
       div0_nodes.forEach(detach);
       t2 = claim_space(div2_nodes);
       div1 = claim_element(div2_nodes, "DIV", { class: true });
       var div1_nodes = children(div1);
       button = claim_element(div1_nodes, "BUTTON", { class: true });
       var button_nodes = children(button);
-      t3 = claim_text(button_nodes, "or Click to Upload Images");
+      t3 = claim_text(button_nodes, "or click to upload images");
       button_nodes.forEach(detach);
       div1_nodes.forEach(detach);
       div2_nodes.forEach(detach);
       t4 = claim_space(div4_nodes);
       div3 = claim_element(div4_nodes, "DIV", { class: true });
       var div3_nodes = children(div3);
-      t5 = claim_text(div3_nodes, "Support JPG, PNG, GIF, TIFF, WEBP");
+      t5 = claim_text(div3_nodes, "Supports JPG, PNG, GIF, TIFF, WEBP, SVG.");
       div3_nodes.forEach(detach);
       div4_nodes.forEach(detach);
       div5_nodes.forEach(detach);
@@ -3140,7 +3179,13 @@ function instance($$self, $$props, $$invalidate) {
       let blob = null;
       let errorMessage2 = null;
       try {
-        let im = vips.Image.newFromBuffer(await file.arrayBuffer(), file.name);
+        let input;
+        if (file.type === "image/svg+xml") {
+          input = await svgToBlob(file).then((b) => b.arrayBuffer());
+        } else {
+          input = await file.arrayBuffer();
+        }
+        let im = vips.Image.newFromBuffer(input, file.name);
         if (onSize && (inputWidth || inputHeight)) {
           im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
         } else if (onScale && inputScale) {

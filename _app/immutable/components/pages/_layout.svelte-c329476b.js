@@ -206,7 +206,7 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  const version = "0.0.1";
+  const version = "0.1.0";
   $$self.$$set = ($$props2) => {
     if ("$$scope" in $$props2)
       $$invalidate(1, $$scope = $$props2.$$scope);
