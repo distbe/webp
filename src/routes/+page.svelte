@@ -254,16 +254,18 @@
         {/if}
         <div class="space-y-3">
           <div>
-            <div class="text-white font-light text-center">Drop your images here to start!</div>
+            <div class="text-white font-light text-center">
+              Drop your images here to get started!
+            </div>
             <div class="text-center">
               <button
                 class="text-white font-light text-sm underline leading-tight"
-                on:click={onClickUpload}>or Click to Upload Images</button
+                on:click={onClickUpload}>or click to upload images</button
               >
             </div>
           </div>
           <div class="text-white font-light text-center text-sm text-opacity-70">
-            Support JPG, PNG, GIF, TIFF, WEBP
+            Supports JPG, PNG, GIF, TIFF, WEBP.
           </div>
         </div>
       </div>
