@@ -222,9 +222,6 @@ function destroy_each(iterations, detaching) {
 function element(name) {
   return document.createElement(name);
 }
-function svg_element(name) {
-  return document.createElementNS("http://www.w3.org/2000/svg", name);
-}
 function text(data) {
   return document.createTextNode(data);
 }
@@ -324,9 +321,6 @@ function claim_element_base(nodes, name, attributes, create_element) {
 function claim_element(nodes, name, attributes) {
   return claim_element_base(nodes, name, attributes, element);
 }
-function claim_svg_element(nodes, name, attributes) {
-  return claim_element_base(nodes, name, attributes, svg_element);
-}
 function claim_text(nodes, data) {
   return claim_node(
     nodes,
@@ -380,25 +374,6 @@ function select_value(select) {
 }
 function toggle_class(element2, name, toggle) {
   element2.classList[toggle ? "add" : "remove"](name);
-}
-function head_selector(nodeId, head) {
-  const result = [];
-  let started = 0;
-  for (const node of head.childNodes) {
-    if (node.nodeType === 8) {
-      const comment = node.textContent.trim();
-      if (comment === `HEAD_${nodeId}_END`) {
-        started -= 1;
-        result.push(node);
-      } else if (comment === `HEAD_${nodeId}_START`) {
-        started += 1;
-        result.push(node);
-      }
-    } else if (started > 0) {
-      result.push(node);
-    }
-  }
-  return result;
 }
 function construct_svelte_component(component, props) {
   return new component(props);
@@ -666,39 +641,36 @@ class SvelteComponent {
   }
 }
 export {
-  select_value as $,
+  run_all as $,
   destroy_component as A,
   tick as B,
   noop as C,
   create_slot as D,
-  src_url_equal as E,
-  append_hydration as F,
-  update_slot_base as G,
-  get_all_dirty_from_scope as H,
-  get_slot_changes as I,
-  component_subscribe as J,
-  assign as K,
-  now as L,
-  loop as M,
-  identity as N,
-  toggle_class as O,
-  listen as P,
-  prevent_default as Q,
-  svg_element as R,
+  update_slot_base as E,
+  get_all_dirty_from_scope as F,
+  get_slot_changes as G,
+  append_hydration as H,
+  component_subscribe as I,
+  assign as J,
+  now as K,
+  loop as L,
+  identity as M,
+  toggle_class as N,
+  listen as O,
+  bind as P,
+  add_flush_callback as Q,
+  set_input_value as R,
   SvelteComponent as S,
-  claim_svg_element as T,
-  stop_propagation as U,
-  run_all as V,
-  set_input_value as W,
-  to_number as X,
-  add_render_callback as Y,
-  select_option as Z,
-  destroy_each as _,
+  to_number as T,
+  add_render_callback as U,
+  select_option as V,
+  destroy_each as W,
+  select_value as X,
+  src_url_equal as Y,
+  stop_propagation as Z,
+  prevent_default as _,
   space as a,
-  bind as a0,
-  head_selector as a1,
-  add_flush_callback as a2,
-  bubble as a3,
+  bubble as a0,
   insert_hydration as b,
   claim_space as c,
   check_outros as d,

@@ -1,4 +1,4 @@
-import { w as writable } from "./index-d73721f7.js";
+import { w as writable } from "./index-fc865e59.js";
 const base = "";
 let assets = base;
 function set_assets(path) {

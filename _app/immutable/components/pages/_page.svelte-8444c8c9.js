@@ -1,6 +1,6 @@
 import { _ as __vitePreload } from "../../chunks/preload-helper-f8376bb0.js";
-import { K as assign, L as now, M as loop, N as identity, S as SvelteComponent, i as init, s as safe_not_equal, k as element, q as text, a as space, l as claim_element, m as children, r as claim_text, h as detach, c as claim_space, n as attr, b as insert_hydration, F as append_hydration, u as set_data, C as noop, e as empty, O as toggle_class, D as create_slot, G as update_slot_base, H as get_all_dirty_from_scope, I as get_slot_changes, f as transition_in, t as transition_out, P as listen, Q as prevent_default, R as svg_element, T as claim_svg_element, U as stop_propagation, V as run_all, v as binding_callbacks, W as set_input_value, X as to_number, Y as add_render_callback, Z as select_option, _ as destroy_each, $ as select_value, a0 as bind, x as create_component, a1 as head_selector, y as claim_component, z as mount_component, a2 as add_flush_callback, d as check_outros, A as destroy_component, J as component_subscribe, o as onMount, g as group_outros, a3 as bubble } from "../../chunks/index-5b9570e9.js";
-import { w as writable } from "../../chunks/index-d73721f7.js";
+import { J as assign, K as now, L as loop, M as identity, S as SvelteComponent, i as init, s as safe_not_equal, k as element, q as text, a as space, l as claim_element, m as children, r as claim_text, h as detach, c as claim_space, n as attr, b as insert_hydration, H as append_hydration, u as set_data, C as noop, e as empty, N as toggle_class, O as listen, f as transition_in, g as group_outros, t as transition_out, d as check_outros, v as binding_callbacks, P as bind, x as create_component, y as claim_component, z as mount_component, Q as add_flush_callback, A as destroy_component, D as create_slot, E as update_slot_base, F as get_all_dirty_from_scope, G as get_slot_changes, R as set_input_value, T as to_number, U as add_render_callback, V as select_option, W as destroy_each, X as select_value, Y as src_url_equal, Z as stop_propagation, _ as prevent_default, I as component_subscribe, o as onMount, $ as run_all, a0 as bubble } from "../../chunks/index-31b80213.js";
+import { w as writable } from "../../chunks/index-fc865e59.js";
 function is_date(obj) {
   return Object.prototype.toString.call(obj) === "[object Date]";
 }
@@ -122,7 +122,7 @@ function create_else_block$1(ctx) {
       /*rate*/
       ctx2[4] !== null
     )
-      return create_if_block_1$1;
+      return create_if_block_1$2;
     return create_else_block_1;
   }
   let current_block_type = select_block_type_1(ctx);
@@ -288,7 +288,7 @@ function create_else_block_1(ctx) {
     }
   };
 }
-function create_if_block_1$1(ctx) {
+function create_if_block_1$2(ctx) {
   let td;
   let t0;
   let t1_value = (
@@ -507,254 +507,204 @@ class Result extends SvelteComponent {
     });
   }
 }
-const Card_svelte_svelte_type_style_lang = "";
-function create_if_block$1(ctx) {
-  let button;
-  let t_value = (
-    /*on*/
-    ctx[0] ? "On" : "Off"
-  );
-  let t;
+const InputSwitch_svelte_svelte_type_style_lang = "";
+function create_fragment$5(ctx) {
+  let div1;
+  let div0;
   let mounted;
   let dispose;
   return {
     c() {
-      button = element("button");
-      t = text(t_value);
-      this.h();
-    },
-    l(nodes) {
-      button = claim_element(nodes, "BUTTON", { class: true });
-      var button_nodes = children(button);
-      t = claim_text(button_nodes, t_value);
-      button_nodes.forEach(detach);
-      this.h();
-    },
-    h() {
-      attr(button, "class", "card__toggle svelte-use2lp");
-    },
-    m(target, anchor) {
-      insert_hydration(target, button, anchor);
-      append_hydration(button, t);
-      if (!mounted) {
-        dispose = listen(button, "click", prevent_default(
-          /*toggle*/
-          ctx[4]
-        ));
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      if (dirty & /*on*/
-      1 && t_value !== (t_value = /*on*/
-      ctx2[0] ? "On" : "Off"))
-        set_data(t, t_value);
-    },
-    d(detaching) {
-      if (detaching)
-        detach(button);
-      mounted = false;
-      dispose();
-    }
-  };
-}
-function create_fragment$5(ctx) {
-  let div1;
-  let dvi;
-  let h3;
-  let t0;
-  let t1;
-  let t2;
-  let div0;
-  let current;
-  let if_block = !/*disabled*/
-  ctx[1] && create_if_block$1(ctx);
-  const default_slot_template = (
-    /*#slots*/
-    ctx[6].default
-  );
-  const default_slot = create_slot(
-    default_slot_template,
-    ctx,
-    /*$$scope*/
-    ctx[5],
-    null
-  );
-  return {
-    c() {
       div1 = element("div");
-      dvi = element("dvi");
-      h3 = element("h3");
-      t0 = text(
-        /*title*/
-        ctx[2]
-      );
-      t1 = space();
-      if (if_block)
-        if_block.c();
-      t2 = space();
       div0 = element("div");
-      if (default_slot)
-        default_slot.c();
       this.h();
     },
     l(nodes) {
       div1 = claim_element(nodes, "DIV", { class: true });
       var div1_nodes = children(div1);
-      dvi = claim_element(div1_nodes, "DVI", { class: true });
-      var dvi_nodes = children(dvi);
-      h3 = claim_element(dvi_nodes, "H3", { class: true });
-      var h3_nodes = children(h3);
-      t0 = claim_text(
-        h3_nodes,
-        /*title*/
-        ctx[2]
-      );
-      h3_nodes.forEach(detach);
-      t1 = claim_space(dvi_nodes);
-      if (if_block)
-        if_block.l(dvi_nodes);
-      dvi_nodes.forEach(detach);
-      t2 = claim_space(div1_nodes);
       div0 = claim_element(div1_nodes, "DIV", { class: true });
-      var div0_nodes = children(div0);
-      if (default_slot)
-        default_slot.l(div0_nodes);
-      div0_nodes.forEach(detach);
+      children(div0).forEach(detach);
       div1_nodes.forEach(detach);
       this.h();
     },
     h() {
-      attr(h3, "class", "card__title svelte-use2lp");
-      attr(dvi, "class", "card__header svelte-use2lp");
-      attr(div0, "class", "card__body");
-      attr(div1, "class", "card svelte-use2lp");
+      attr(div0, "class", "input-switch__control svelte-g8v6up");
+      attr(div1, "class", "input-switch svelte-g8v6up");
       toggle_class(
         div1,
-        "card--on",
-        /*on*/
+        "input-switch--on",
+        /*value*/
         ctx[0]
-      );
-      toggle_class(div1, "card--off", !/*on*/
-      ctx[0]);
-      toggle_class(
-        div1,
-        "card--color1",
-        /*color*/
-        ctx[3] === 1
-      );
-      toggle_class(
-        div1,
-        "card--color2",
-        /*color*/
-        ctx[3] === 2
-      );
-      toggle_class(
-        div1,
-        "card--color3",
-        /*color*/
-        ctx[3] === 3
       );
     },
     m(target, anchor) {
       insert_hydration(target, div1, anchor);
-      append_hydration(div1, dvi);
-      append_hydration(dvi, h3);
-      append_hydration(h3, t0);
-      append_hydration(dvi, t1);
-      if (if_block)
-        if_block.m(dvi, null);
-      append_hydration(div1, t2);
       append_hydration(div1, div0);
+      if (!mounted) {
+        dispose = listen(
+          div1,
+          "click",
+          /*onClick*/
+          ctx[1]
+        );
+        mounted = true;
+      }
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & /*value*/
+      1) {
+        toggle_class(
+          div1,
+          "input-switch--on",
+          /*value*/
+          ctx2[0]
+        );
+      }
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching)
+        detach(div1);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function instance$5($$self, $$props, $$invalidate) {
+  let { value = false } = $$props;
+  function onClick() {
+    $$invalidate(0, value = !value);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("value" in $$props2)
+      $$invalidate(0, value = $$props2.value);
+  };
+  return [value, onClick];
+}
+class InputSwitch extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance$5, create_fragment$5, safe_not_equal, { value: 0 });
+  }
+}
+const Card_svelte_svelte_type_style_lang = "";
+function create_if_block_1$1(ctx) {
+  let inputswitch;
+  let updating_value;
+  let current;
+  function inputswitch_value_binding(value) {
+    ctx[5](value);
+  }
+  let inputswitch_props = {};
+  if (
+    /*on*/
+    ctx[0] !== void 0
+  ) {
+    inputswitch_props.value = /*on*/
+    ctx[0];
+  }
+  inputswitch = new InputSwitch({ props: inputswitch_props });
+  binding_callbacks.push(() => bind(inputswitch, "value", inputswitch_value_binding));
+  return {
+    c() {
+      create_component(inputswitch.$$.fragment);
+    },
+    l(nodes) {
+      claim_component(inputswitch.$$.fragment, nodes);
+    },
+    m(target, anchor) {
+      mount_component(inputswitch, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const inputswitch_changes = {};
+      if (!updating_value && dirty & /*on*/
+      1) {
+        updating_value = true;
+        inputswitch_changes.value = /*on*/
+        ctx2[0];
+        add_flush_callback(() => updating_value = false);
+      }
+      inputswitch.$set(inputswitch_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(inputswitch.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(inputswitch.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(inputswitch, detaching);
+    }
+  };
+}
+function create_if_block$1(ctx) {
+  let div;
+  let current;
+  const default_slot_template = (
+    /*#slots*/
+    ctx[4].default
+  );
+  const default_slot = create_slot(
+    default_slot_template,
+    ctx,
+    /*$$scope*/
+    ctx[3],
+    null
+  );
+  return {
+    c() {
+      div = element("div");
+      if (default_slot)
+        default_slot.c();
+      this.h();
+    },
+    l(nodes) {
+      div = claim_element(nodes, "DIV", { class: true });
+      var div_nodes = children(div);
+      if (default_slot)
+        default_slot.l(div_nodes);
+      div_nodes.forEach(detach);
+      this.h();
+    },
+    h() {
+      attr(div, "class", "card__body svelte-1allh55");
+    },
+    m(target, anchor) {
+      insert_hydration(target, div, anchor);
       if (default_slot) {
-        default_slot.m(div0, null);
+        default_slot.m(div, null);
       }
       current = true;
     },
-    p(ctx2, [dirty]) {
-      if (!current || dirty & /*title*/
-      4)
-        set_data(
-          t0,
-          /*title*/
-          ctx2[2]
-        );
-      if (!/*disabled*/
-      ctx2[1]) {
-        if (if_block) {
-          if_block.p(ctx2, dirty);
-        } else {
-          if_block = create_if_block$1(ctx2);
-          if_block.c();
-          if_block.m(dvi, null);
-        }
-      } else if (if_block) {
-        if_block.d(1);
-        if_block = null;
-      }
+    p(ctx2, dirty) {
       if (default_slot) {
         if (default_slot.p && (!current || dirty & /*$$scope*/
-        32)) {
+        8)) {
           update_slot_base(
             default_slot,
             default_slot_template,
             ctx2,
             /*$$scope*/
-            ctx2[5],
+            ctx2[3],
             !current ? get_all_dirty_from_scope(
               /*$$scope*/
-              ctx2[5]
+              ctx2[3]
             ) : get_slot_changes(
               default_slot_template,
               /*$$scope*/
-              ctx2[5],
+              ctx2[3],
               dirty,
               null
             ),
             null
           );
         }
-      }
-      if (!current || dirty & /*on*/
-      1) {
-        toggle_class(
-          div1,
-          "card--on",
-          /*on*/
-          ctx2[0]
-        );
-      }
-      if (!current || dirty & /*on*/
-      1) {
-        toggle_class(div1, "card--off", !/*on*/
-        ctx2[0]);
-      }
-      if (!current || dirty & /*color*/
-      8) {
-        toggle_class(
-          div1,
-          "card--color1",
-          /*color*/
-          ctx2[3] === 1
-        );
-      }
-      if (!current || dirty & /*color*/
-      8) {
-        toggle_class(
-          div1,
-          "card--color2",
-          /*color*/
-          ctx2[3] === 2
-        );
-      }
-      if (!current || dirty & /*color*/
-      8) {
-        toggle_class(
-          div1,
-          "card--color3",
-          /*color*/
-          ctx2[3] === 3
-        );
       }
     },
     i(local) {
@@ -769,25 +719,167 @@ function create_fragment$5(ctx) {
     },
     d(detaching) {
       if (detaching)
-        detach(div1);
-      if (if_block)
-        if_block.d();
+        detach(div);
       if (default_slot)
         default_slot.d(detaching);
     }
   };
 }
-function instance$5($$self, $$props, $$invalidate) {
+function create_fragment$4(ctx) {
+  let div;
+  let dvi;
+  let h3;
+  let t0;
+  let t1;
+  let t2;
+  let current;
+  let if_block0 = !/*disabled*/
+  ctx[1] && create_if_block_1$1(ctx);
+  let if_block1 = (
+    /*on*/
+    ctx[0] && create_if_block$1(ctx)
+  );
+  return {
+    c() {
+      div = element("div");
+      dvi = element("dvi");
+      h3 = element("h3");
+      t0 = text(
+        /*title*/
+        ctx[2]
+      );
+      t1 = space();
+      if (if_block0)
+        if_block0.c();
+      t2 = space();
+      if (if_block1)
+        if_block1.c();
+      this.h();
+    },
+    l(nodes) {
+      div = claim_element(nodes, "DIV", { class: true });
+      var div_nodes = children(div);
+      dvi = claim_element(div_nodes, "DVI", { class: true });
+      var dvi_nodes = children(dvi);
+      h3 = claim_element(dvi_nodes, "H3", { class: true });
+      var h3_nodes = children(h3);
+      t0 = claim_text(
+        h3_nodes,
+        /*title*/
+        ctx[2]
+      );
+      h3_nodes.forEach(detach);
+      t1 = claim_space(dvi_nodes);
+      if (if_block0)
+        if_block0.l(dvi_nodes);
+      dvi_nodes.forEach(detach);
+      t2 = claim_space(div_nodes);
+      if (if_block1)
+        if_block1.l(div_nodes);
+      div_nodes.forEach(detach);
+      this.h();
+    },
+    h() {
+      attr(h3, "class", "card__title svelte-1allh55");
+      attr(dvi, "class", "card__header svelte-1allh55");
+      attr(div, "class", "card svelte-1allh55");
+    },
+    m(target, anchor) {
+      insert_hydration(target, div, anchor);
+      append_hydration(div, dvi);
+      append_hydration(dvi, h3);
+      append_hydration(h3, t0);
+      append_hydration(dvi, t1);
+      if (if_block0)
+        if_block0.m(dvi, null);
+      append_hydration(div, t2);
+      if (if_block1)
+        if_block1.m(div, null);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      if (!current || dirty & /*title*/
+      4)
+        set_data(
+          t0,
+          /*title*/
+          ctx2[2]
+        );
+      if (!/*disabled*/
+      ctx2[1]) {
+        if (if_block0) {
+          if_block0.p(ctx2, dirty);
+          if (dirty & /*disabled*/
+          2) {
+            transition_in(if_block0, 1);
+          }
+        } else {
+          if_block0 = create_if_block_1$1(ctx2);
+          if_block0.c();
+          transition_in(if_block0, 1);
+          if_block0.m(dvi, null);
+        }
+      } else if (if_block0) {
+        group_outros();
+        transition_out(if_block0, 1, 1, () => {
+          if_block0 = null;
+        });
+        check_outros();
+      }
+      if (
+        /*on*/
+        ctx2[0]
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+          if (dirty & /*on*/
+          1) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block$1(ctx2);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(div, null);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block0);
+      transition_in(if_block1);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block0);
+      transition_out(if_block1);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching)
+        detach(div);
+      if (if_block0)
+        if_block0.d();
+      if (if_block1)
+        if_block1.d();
+    }
+  };
+}
+function instance$4($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { disabled = false } = $$props;
   let { on = false } = $$props;
   let { title } = $$props;
-  let { color = 1 } = $$props;
-  function toggle() {
-    if (disabled) {
-      return;
-    }
-    $$invalidate(0, on = !on);
+  function inputswitch_value_binding(value) {
+    on = value;
+    $$invalidate(0, on);
   }
   $$self.$$set = ($$props2) => {
     if ("disabled" in $$props2)
@@ -796,21 +888,19 @@ function instance$5($$self, $$props, $$invalidate) {
       $$invalidate(0, on = $$props2.on);
     if ("title" in $$props2)
       $$invalidate(2, title = $$props2.title);
-    if ("color" in $$props2)
-      $$invalidate(3, color = $$props2.color);
     if ("$$scope" in $$props2)
-      $$invalidate(5, $$scope = $$props2.$$scope);
+      $$invalidate(3, $$scope = $$props2.$$scope);
   };
-  return [on, disabled, title, color, toggle, $$scope, slots];
+  return [on, disabled, title, $$scope, slots, inputswitch_value_binding];
 }
 class Card extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$5, create_fragment$5, safe_not_equal, { disabled: 1, on: 0, title: 2, color: 3 });
+    init(this, options, instance$4, create_fragment$4, safe_not_equal, { disabled: 1, on: 0, title: 2 });
   }
 }
 const InputGroup_svelte_svelte_type_style_lang = "";
-function create_fragment$4(ctx) {
+function create_fragment$3(ctx) {
   let div1;
   let div0;
   let t0;
@@ -858,8 +948,8 @@ function create_fragment$4(ctx) {
       this.h();
     },
     h() {
-      attr(div0, "class", "input-group__label svelte-1h09w72");
-      attr(div1, "class", "input-group svelte-1h09w72");
+      attr(div0, "class", "input-group__label svelte-hk8el4");
+      attr(div1, "class", "input-group svelte-hk8el4");
     },
     m(target, anchor) {
       insert_hydration(target, div1, anchor);
@@ -921,7 +1011,7 @@ function create_fragment$4(ctx) {
     }
   };
 }
-function instance$4($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { label } = $$props;
   $$self.$$set = ($$props2) => {
@@ -935,251 +1025,10 @@ function instance$4($$self, $$props, $$invalidate) {
 class InputGroup extends SvelteComponent {
   constructor(options) {
     super();
-    init(this, options, instance$4, create_fragment$4, safe_not_equal, { label: 0 });
+    init(this, options, instance$3, create_fragment$3, safe_not_equal, { label: 0 });
   }
 }
 const InputKnob_svelte_svelte_type_style_lang = "";
-function create_fragment$3(ctx) {
-  let div;
-  let svg;
-  let circle;
-  let mounted;
-  let dispose;
-  return {
-    c() {
-      div = element("div");
-      svg = svg_element("svg");
-      circle = svg_element("circle");
-      this.h();
-    },
-    l(nodes) {
-      div = claim_element(nodes, "DIV", { class: true });
-      var div_nodes = children(div);
-      svg = claim_svg_element(div_nodes, "svg", {
-        width: true,
-        height: true,
-        class: true,
-        viewBox: true
-      });
-      var svg_nodes = children(svg);
-      circle = claim_svg_element(svg_nodes, "circle", {
-        cx: true,
-        cy: true,
-        r: true,
-        "stroke-width": true,
-        fill: true,
-        transform: true,
-        "stroke-dasharray": true,
-        "stroke-dashoffset": true
-      });
-      children(circle).forEach(detach);
-      svg_nodes.forEach(detach);
-      div_nodes.forEach(detach);
-      this.h();
-    },
-    h() {
-      attr(circle, "cx", "50");
-      attr(circle, "cy", "50");
-      attr(circle, "r", "48.5");
-      attr(circle, "stroke-width", "3");
-      attr(circle, "fill", "transparent");
-      attr(circle, "transform", "rotate(90 50 50)");
-      attr(
-        circle,
-        "stroke-dasharray",
-        /*controlDashArray*/
-        ctx[1]
-      );
-      attr(
-        circle,
-        "stroke-dashoffset",
-        /*controlDashOffset*/
-        ctx[2]
-      );
-      attr(svg, "width", "100");
-      attr(svg, "height", "100");
-      attr(svg, "class", "input-knob__control svelte-a3l8oe");
-      attr(svg, "viewBox", "0 0 100 100");
-      attr(div, "class", "input-knob svelte-a3l8oe");
-    },
-    m(target, anchor) {
-      insert_hydration(target, div, anchor);
-      append_hydration(div, svg);
-      append_hydration(svg, circle);
-      ctx[10](div);
-      if (!mounted) {
-        dispose = [
-          listen(div, "wheel", stop_propagation(prevent_default(
-            /*onWheel*/
-            ctx[3]
-          ))),
-          listen(div, "mousedown", prevent_default(
-            /*onMouseDown*/
-            ctx[4]
-          )),
-          listen(div, "touchstart", prevent_default(
-            /*onTouchStart*/
-            ctx[5]
-          ))
-        ];
-        mounted = true;
-      }
-    },
-    p(ctx2, [dirty]) {
-      if (dirty & /*controlDashArray*/
-      2) {
-        attr(
-          circle,
-          "stroke-dasharray",
-          /*controlDashArray*/
-          ctx2[1]
-        );
-      }
-      if (dirty & /*controlDashOffset*/
-      4) {
-        attr(
-          circle,
-          "stroke-dashoffset",
-          /*controlDashOffset*/
-          ctx2[2]
-        );
-      }
-    },
-    i: noop,
-    o: noop,
-    d(detaching) {
-      if (detaching)
-        detach(div);
-      ctx[10](null);
-      mounted = false;
-      run_all(dispose);
-    }
-  };
-}
-function instance$3($$self, $$props, $$invalidate) {
-  let { value = null } = $$props;
-  let { min } = $$props;
-  let { max } = $$props;
-  let { step = null } = $$props;
-  let { knobElem = null } = $$props;
-  let { controlDashArray = "" } = $$props;
-  let { controlDashOffset = 0 } = $$props;
-  function setValue(v) {
-    if (v === null) {
-      return null;
-    }
-    v = Math.min(Math.max(v, min), max);
-    if (step !== null) {
-      const offset = min ?? 0;
-      v = Math.round((v - offset) / step) * step + offset;
-    }
-    $$invalidate(6, value = v);
-  }
-  const D = 2 * Math.PI * 48.5;
-  function setControlDash(v) {
-    v = v ?? 0;
-    const range = max - min;
-    const ratio = range === 0 ? 0 : (v - min) / range;
-    $$invalidate(1, controlDashArray = `${D * ratio} ${D * (1 - ratio)}`);
-  }
-  function setPoint(clientX, clientY) {
-    const { left, top, width, height } = knobElem.getBoundingClientRect();
-    const x = left + width / 2 - clientX;
-    const y = top + height / 2 - clientY;
-    $$invalidate(6, value = (Math.atan2(-x, y) / (2 * Math.PI) + 0.5) * (max - min) + min);
-  }
-  function onWheel(e) {
-    if (e.deltaY) {
-      $$invalidate(6, value = (value ?? min) + (e.deltaY > 0 ? 1 : -1) * (step ?? 1));
-    }
-  }
-  function onMouseDown() {
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-  }
-  function onMouseMove(e) {
-    setPoint(e.clientX, e.clientY);
-  }
-  function onMouseUp(e) {
-    e.preventDefault();
-    setPoint(e.clientX, e.clientY);
-    window.removeEventListener("mousemove", onMouseMove);
-    window.removeEventListener("mouseup", onMouseUp);
-  }
-  function onTouchStart() {
-    window.addEventListener("touchmove", onTouchMove);
-    window.addEventListener("touchend", onTouchEnd);
-  }
-  function onTouchMove(e) {
-    if (e.touches.length == 1) {
-      setPoint(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  }
-  function onTouchEnd(e) {
-    e.preventDefault();
-    setPoint(e.touches[0].clientX, e.touches[0].clientY);
-    window.removeEventListener("touchmove", onTouchMove);
-    window.removeEventListener("touchend", onTouchEnd);
-  }
-  function div_binding($$value) {
-    binding_callbacks[$$value ? "unshift" : "push"](() => {
-      knobElem = $$value;
-      $$invalidate(0, knobElem);
-    });
-  }
-  $$self.$$set = ($$props2) => {
-    if ("value" in $$props2)
-      $$invalidate(6, value = $$props2.value);
-    if ("min" in $$props2)
-      $$invalidate(7, min = $$props2.min);
-    if ("max" in $$props2)
-      $$invalidate(8, max = $$props2.max);
-    if ("step" in $$props2)
-      $$invalidate(9, step = $$props2.step);
-    if ("knobElem" in $$props2)
-      $$invalidate(0, knobElem = $$props2.knobElem);
-    if ("controlDashArray" in $$props2)
-      $$invalidate(1, controlDashArray = $$props2.controlDashArray);
-    if ("controlDashOffset" in $$props2)
-      $$invalidate(2, controlDashOffset = $$props2.controlDashOffset);
-  };
-  $$self.$$.update = () => {
-    if ($$self.$$.dirty & /*value*/
-    64) {
-      {
-        setValue(value);
-        setControlDash(value);
-      }
-    }
-  };
-  return [
-    knobElem,
-    controlDashArray,
-    controlDashOffset,
-    onWheel,
-    onMouseDown,
-    onTouchStart,
-    value,
-    min,
-    max,
-    step,
-    div_binding
-  ];
-}
-class InputKnob extends SvelteComponent {
-  constructor(options) {
-    super();
-    init(this, options, instance$3, create_fragment$3, safe_not_equal, {
-      value: 6,
-      min: 7,
-      max: 8,
-      step: 9,
-      knobElem: 0,
-      controlDashArray: 1,
-      controlDashOffset: 2
-    });
-  }
-}
 const InputNumber_svelte_svelte_type_style_lang = "";
 function create_fragment$2(ctx) {
   let input;
@@ -1202,7 +1051,7 @@ function create_fragment$2(ctx) {
     },
     h() {
       attr(input, "type", "number");
-      attr(input, "class", "input-number svelte-122uc7s");
+      attr(input, "class", "input-number svelte-16knh58");
       attr(
         input,
         "min",
@@ -1415,7 +1264,7 @@ function create_fragment$1(ctx) {
       this.h();
     },
     h() {
-      attr(select, "class", "input-select svelte-1eoujzt");
+      attr(select, "class", "input-select svelte-m1cv8l");
       if (
         /*value*/
         ctx[0] === void 0
@@ -1665,6 +1514,7 @@ async function svgToBlob(file) {
   }
   return new Blob([uInt8Array], { type: "image/png" });
 }
+const logo = "" + new URL("../../assets/logo-ec8219a6.svg", import.meta.url).href;
 const _page_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
@@ -1675,16 +1525,12 @@ function get_each_context(ctx, list, i) {
   return child_ctx;
 }
 function create_default_slot_7(ctx) {
-  let div1;
+  let div;
   let inputnumber;
   let updating_value;
-  let t;
-  let div0;
-  let inputknob;
-  let updating_value_1;
   let current;
   function inputnumber_value_binding(value) {
-    ctx[17](value);
+    ctx[18](value);
   }
   let inputnumber_props = { max: 100, min: 0, step: 1 };
   if (
@@ -1696,50 +1542,25 @@ function create_default_slot_7(ctx) {
   }
   inputnumber = new InputNumber({ props: inputnumber_props });
   binding_callbacks.push(() => bind(inputnumber, "value", inputnumber_value_binding));
-  function inputknob_value_binding(value) {
-    ctx[18](value);
-  }
-  let inputknob_props = { max: 100, min: 0 };
-  if (
-    /*inputQuality*/
-    ctx[8] !== void 0
-  ) {
-    inputknob_props.value = /*inputQuality*/
-    ctx[8];
-  }
-  inputknob = new InputKnob({ props: inputknob_props });
-  binding_callbacks.push(() => bind(inputknob, "value", inputknob_value_binding));
   return {
     c() {
-      div1 = element("div");
+      div = element("div");
       create_component(inputnumber.$$.fragment);
-      t = space();
-      div0 = element("div");
-      create_component(inputknob.$$.fragment);
       this.h();
     },
     l(nodes) {
-      div1 = claim_element(nodes, "DIV", { class: true });
-      var div1_nodes = children(div1);
-      claim_component(inputnumber.$$.fragment, div1_nodes);
-      t = claim_space(div1_nodes);
-      div0 = claim_element(div1_nodes, "DIV", { class: true });
-      var div0_nodes = children(div0);
-      claim_component(inputknob.$$.fragment, div0_nodes);
-      div0_nodes.forEach(detach);
-      div1_nodes.forEach(detach);
+      div = claim_element(nodes, "DIV", { class: true });
+      var div_nodes = children(div);
+      claim_component(inputnumber.$$.fragment, div_nodes);
+      div_nodes.forEach(detach);
       this.h();
     },
     h() {
-      attr(div0, "class", "w-28 mx-auto");
-      attr(div1, "class", "space-y-4");
+      attr(div, "class", "space-y-4");
     },
     m(target, anchor) {
-      insert_hydration(target, div1, anchor);
-      mount_component(inputnumber, div1, null);
-      append_hydration(div1, t);
-      append_hydration(div1, div0);
-      mount_component(inputknob, div0, null);
+      insert_hydration(target, div, anchor);
+      mount_component(inputnumber, div, null);
       current = true;
     },
     p(ctx2, dirty) {
@@ -1752,33 +1573,21 @@ function create_default_slot_7(ctx) {
         add_flush_callback(() => updating_value = false);
       }
       inputnumber.$set(inputnumber_changes);
-      const inputknob_changes = {};
-      if (!updating_value_1 && dirty[0] & /*inputQuality*/
-      256) {
-        updating_value_1 = true;
-        inputknob_changes.value = /*inputQuality*/
-        ctx2[8];
-        add_flush_callback(() => updating_value_1 = false);
-      }
-      inputknob.$set(inputknob_changes);
     },
     i(local) {
       if (current)
         return;
       transition_in(inputnumber.$$.fragment, local);
-      transition_in(inputknob.$$.fragment, local);
       current = true;
     },
     o(local) {
       transition_out(inputnumber.$$.fragment, local);
-      transition_out(inputknob.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching)
-        detach(div1);
+        detach(div);
       destroy_component(inputnumber);
-      destroy_component(inputknob);
     }
   };
 }
@@ -2042,7 +1851,7 @@ function create_default_slot_2(ctx) {
       this.h();
     },
     h() {
-      attr(div, "class", "space-y-2");
+      attr(div, "class", "space-y-3");
     },
     m(target, anchor) {
       insert_hydration(target, div, anchor);
@@ -2241,7 +2050,7 @@ function create_else_block(ctx) {
       div4 = element("div");
       div2 = element("div");
       div0 = element("div");
-      t1 = text("Drop your images here to get started!");
+      t1 = text("Drop your images here!");
       t2 = space();
       div1 = element("div");
       button = element("button");
@@ -2263,7 +2072,7 @@ function create_else_block(ctx) {
       var div2_nodes = children(div2);
       div0 = claim_element(div2_nodes, "DIV", { class: true });
       var div0_nodes = children(div0);
-      t1 = claim_text(div0_nodes, "Drop your images here to get started!");
+      t1 = claim_text(div0_nodes, "Drop your images here!");
       div0_nodes.forEach(detach);
       t2 = claim_space(div2_nodes);
       div1 = claim_element(div2_nodes, "DIV", { class: true });
@@ -2284,12 +2093,12 @@ function create_else_block(ctx) {
       this.h();
     },
     h() {
-      attr(div0, "class", "text-white font-light text-center");
+      attr(div0, "class", "text-white text-opacity-75 font-light text-center text-2xl");
       attr(button, "class", "text-white font-light text-sm underline leading-tight");
       attr(div1, "class", "text-center");
       attr(div3, "class", "text-white font-light text-center text-sm text-opacity-70");
       attr(div4, "class", "space-y-3");
-      attr(div5, "class", "dropzone space-y-4 svelte-1hi61xe");
+      attr(div5, "class", "dropzone space-y-4 svelte-17n85hh");
     },
     m(target, anchor) {
       insert_hydration(target, div5, anchor);
@@ -2313,7 +2122,7 @@ function create_else_block(ctx) {
           button,
           "click",
           /*onClickUpload*/
-          ctx[14]
+          ctx[15]
         );
         mounted = true;
       }
@@ -2630,15 +2439,15 @@ function create_if_block(ctx) {
         dispose = [
           listen(div, "dragover", stop_propagation(prevent_default(
             /*dragover_handler*/
-            ctx[16]
+            ctx[17]
           ))),
           listen(div, "dragleave", stop_propagation(prevent_default(
             /*onDragLeave*/
-            ctx[13]
+            ctx[14]
           ))),
           listen(div, "drop", stop_propagation(prevent_default(
             /*onDrop*/
-            ctx[15]
+            ctx[16]
           )))
         ];
         mounted = true;
@@ -2654,49 +2463,41 @@ function create_if_block(ctx) {
   };
 }
 function create_fragment(ctx) {
-  let meta0;
-  let link0;
-  let link1;
-  let link2;
-  let link3;
-  let link4;
-  let link5;
-  let link6;
-  let link7;
-  let link8;
-  let link9;
-  let link10;
-  let link11;
-  let link12;
-  let link13;
-  let meta1;
-  let meta2;
-  let meta3;
   let t0;
-  let t1;
-  let div2;
-  let section0;
+  let div4;
+  let aside;
   let div1;
   let div0;
   let card0;
-  let t2;
+  let t1;
   let card1;
   let updating_on;
-  let t3;
+  let t2;
   let card2;
   let updating_on_1;
-  let t4;
-  let section1;
+  let t3;
+  let main;
+  let section;
   let current_block_type_index;
   let if_block0;
+  let t4;
+  let footer;
+  let div3;
+  let a;
+  let img;
+  let img_src_value;
   let t5;
+  let div2;
+  let t6;
+  let t7;
+  let t8;
   let if_block1_anchor;
   let current;
   let mounted;
   let dispose;
   card0 = new Card({
     props: {
-      title: "Quality",
+      title: "Settings",
       on: true,
       disabled: true,
       $$slots: { default: [create_default_slot_6] },
@@ -2708,7 +2509,6 @@ function create_fragment(ctx) {
   }
   let card1_props = {
     title: "Size",
-    color: 2,
     $$slots: { default: [create_default_slot_2] },
     $$scope: { ctx }
   };
@@ -2726,7 +2526,6 @@ function create_fragment(ctx) {
   }
   let card2_props = {
     title: "Scale",
-    color: 3,
     $$slots: { default: [create_default_slot] },
     $$scope: { ctx }
   };
@@ -2757,209 +2556,135 @@ function create_fragment(ctx) {
   );
   return {
     c() {
-      meta0 = element("meta");
-      link0 = element("link");
-      link1 = element("link");
-      link2 = element("link");
-      link3 = element("link");
-      link4 = element("link");
-      link5 = element("link");
-      link6 = element("link");
-      link7 = element("link");
-      link8 = element("link");
-      link9 = element("link");
-      link10 = element("link");
-      link11 = element("link");
-      link12 = element("link");
-      link13 = element("link");
-      meta1 = element("meta");
-      meta2 = element("meta");
-      meta3 = element("meta");
       t0 = space();
-      t1 = space();
-      div2 = element("div");
-      section0 = element("section");
+      div4 = element("div");
+      aside = element("aside");
       div1 = element("div");
       div0 = element("div");
       create_component(card0.$$.fragment);
-      t2 = space();
+      t1 = space();
       create_component(card1.$$.fragment);
-      t3 = space();
+      t2 = space();
       create_component(card2.$$.fragment);
-      t4 = space();
-      section1 = element("section");
+      t3 = space();
+      main = element("main");
+      section = element("section");
       if_block0.c();
+      t4 = space();
+      footer = element("footer");
+      div3 = element("div");
+      a = element("a");
+      img = element("img");
       t5 = space();
+      div2 = element("div");
+      t6 = text("v");
+      t7 = text(
+        /*version*/
+        ctx[11]
+      );
+      t8 = space();
       if (if_block1)
         if_block1.c();
       if_block1_anchor = empty();
       this.h();
     },
     l(nodes) {
-      const head_nodes = head_selector("svelte-thsy8v", document.head);
-      meta0 = claim_element(head_nodes, "META", { name: true, content: true });
-      link0 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link1 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link2 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link3 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link4 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link5 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link6 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link7 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link8 = claim_element(head_nodes, "LINK", { rel: true, sizes: true, href: true });
-      link9 = claim_element(head_nodes, "LINK", {
-        rel: true,
-        type: true,
-        sizes: true,
-        href: true
-      });
-      link10 = claim_element(head_nodes, "LINK", {
-        rel: true,
-        type: true,
-        sizes: true,
-        href: true
-      });
-      link11 = claim_element(head_nodes, "LINK", {
-        rel: true,
-        type: true,
-        sizes: true,
-        href: true
-      });
-      link12 = claim_element(head_nodes, "LINK", {
-        rel: true,
-        type: true,
-        sizes: true,
-        href: true
-      });
-      link13 = claim_element(head_nodes, "LINK", { rel: true, href: true });
-      meta1 = claim_element(head_nodes, "META", { name: true, content: true });
-      meta2 = claim_element(head_nodes, "META", { name: true, content: true });
-      meta3 = claim_element(head_nodes, "META", { name: true, content: true });
-      head_nodes.forEach(detach);
       t0 = claim_space(nodes);
-      t1 = claim_space(nodes);
-      div2 = claim_element(nodes, "DIV", { class: true });
-      var div2_nodes = children(div2);
-      section0 = claim_element(div2_nodes, "SECTION", {});
-      var section0_nodes = children(section0);
-      div1 = claim_element(section0_nodes, "DIV", { class: true });
+      div4 = claim_element(nodes, "DIV", { class: true });
+      var div4_nodes = children(div4);
+      aside = claim_element(div4_nodes, "ASIDE", { class: true });
+      var aside_nodes = children(aside);
+      div1 = claim_element(aside_nodes, "DIV", { class: true });
       var div1_nodes = children(div1);
       div0 = claim_element(div1_nodes, "DIV", { class: true });
       var div0_nodes = children(div0);
       claim_component(card0.$$.fragment, div0_nodes);
-      t2 = claim_space(div0_nodes);
+      t1 = claim_space(div0_nodes);
       claim_component(card1.$$.fragment, div0_nodes);
-      t3 = claim_space(div0_nodes);
+      t2 = claim_space(div0_nodes);
       claim_component(card2.$$.fragment, div0_nodes);
       div0_nodes.forEach(detach);
       div1_nodes.forEach(detach);
-      section0_nodes.forEach(detach);
-      t4 = claim_space(div2_nodes);
-      section1 = claim_element(div2_nodes, "SECTION", { class: true });
-      var section1_nodes = children(section1);
-      if_block0.l(section1_nodes);
-      section1_nodes.forEach(detach);
+      aside_nodes.forEach(detach);
+      t3 = claim_space(div4_nodes);
+      main = claim_element(div4_nodes, "MAIN", { class: true });
+      var main_nodes = children(main);
+      section = claim_element(main_nodes, "SECTION", { class: true });
+      var section_nodes = children(section);
+      if_block0.l(section_nodes);
+      section_nodes.forEach(detach);
+      t4 = claim_space(main_nodes);
+      footer = claim_element(main_nodes, "FOOTER", { class: true });
+      var footer_nodes = children(footer);
+      div3 = claim_element(footer_nodes, "DIV", { class: true });
+      var div3_nodes = children(div3);
+      a = claim_element(div3_nodes, "A", { href: true, target: true, rel: true });
+      var a_nodes = children(a);
+      img = claim_element(a_nodes, "IMG", { src: true, alt: true, class: true });
+      a_nodes.forEach(detach);
+      t5 = claim_space(div3_nodes);
+      div2 = claim_element(div3_nodes, "DIV", { class: true });
+      var div2_nodes = children(div2);
+      t6 = claim_text(div2_nodes, "v");
+      t7 = claim_text(
+        div2_nodes,
+        /*version*/
+        ctx[11]
+      );
       div2_nodes.forEach(detach);
-      t5 = claim_space(nodes);
+      div3_nodes.forEach(detach);
+      footer_nodes.forEach(detach);
+      main_nodes.forEach(detach);
+      div4_nodes.forEach(detach);
+      t8 = claim_space(nodes);
       if (if_block1)
         if_block1.l(nodes);
       if_block1_anchor = empty();
       this.h();
     },
     h() {
-      document.title = "WebP converter by dist.be";
-      attr(meta0, "name", "description");
-      attr(meta0, "content", "Convert Images to WebP for Faster Loading and Better User Experience. Start Optimizing Today!");
-      attr(link0, "rel", "apple-touch-icon");
-      attr(link0, "sizes", "57x57");
-      attr(link0, "href", "/apple-icon-57x57.png");
-      attr(link1, "rel", "apple-touch-icon");
-      attr(link1, "sizes", "60x60");
-      attr(link1, "href", "/apple-icon-60x60.png");
-      attr(link2, "rel", "apple-touch-icon");
-      attr(link2, "sizes", "72x72");
-      attr(link2, "href", "/apple-icon-72x72.png");
-      attr(link3, "rel", "apple-touch-icon");
-      attr(link3, "sizes", "76x76");
-      attr(link3, "href", "/apple-icon-76x76.png");
-      attr(link4, "rel", "apple-touch-icon");
-      attr(link4, "sizes", "114x114");
-      attr(link4, "href", "/apple-icon-114x114.png");
-      attr(link5, "rel", "apple-touch-icon");
-      attr(link5, "sizes", "120x120");
-      attr(link5, "href", "/apple-icon-120x120.png");
-      attr(link6, "rel", "apple-touch-icon");
-      attr(link6, "sizes", "144x144");
-      attr(link6, "href", "/apple-icon-144x144.png");
-      attr(link7, "rel", "apple-touch-icon");
-      attr(link7, "sizes", "152x152");
-      attr(link7, "href", "/apple-icon-152x152.png");
-      attr(link8, "rel", "apple-touch-icon");
-      attr(link8, "sizes", "180x180");
-      attr(link8, "href", "/apple-icon-180x180.png");
-      attr(link9, "rel", "icon");
-      attr(link9, "type", "image/png");
-      attr(link9, "sizes", "192x192");
-      attr(link9, "href", "/android-icon-192x192.png");
-      attr(link10, "rel", "icon");
-      attr(link10, "type", "image/png");
-      attr(link10, "sizes", "32x32");
-      attr(link10, "href", "/favicon-32x32.png");
-      attr(link11, "rel", "icon");
-      attr(link11, "type", "image/png");
-      attr(link11, "sizes", "96x96");
-      attr(link11, "href", "/favicon-96x96.png");
-      attr(link12, "rel", "icon");
-      attr(link12, "type", "image/png");
-      attr(link12, "sizes", "16x16");
-      attr(link12, "href", "/favicon-16x16.png");
-      attr(link13, "rel", "manifest");
-      attr(link13, "href", "/manifest.json");
-      attr(meta1, "name", "msapplication-TileColor");
-      attr(meta1, "content", "#ffffff");
-      attr(meta2, "name", "msapplication-TileImage");
-      attr(meta2, "content", "/ms-icon-144x144.png");
-      attr(meta3, "name", "theme-color");
-      attr(meta3, "content", "#ffffff");
-      attr(div0, "class", "flex gap-8 items-center justify-center flex-wrap");
-      attr(div1, "class", "container mx-auto px-4");
-      attr(section1, "class", "flex-1 flex items-center justify-center");
-      attr(div2, "class", "flex flex-col h-full gap-y-6");
+      attr(div0, "class", "");
+      attr(div1, "class", "flex-1");
+      attr(aside, "class", "flex-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col");
+      attr(section, "class", "flex-1 flex items-center justify-center");
+      if (!src_url_equal(img.src, img_src_value = logo))
+        attr(img, "src", img_src_value);
+      attr(img, "alt", "dist.be");
+      attr(img, "class", "w-[54px] h-[24px]");
+      attr(a, "href", "https://github.com/distbe");
+      attr(a, "target", "_blank");
+      attr(a, "rel", "noopener noreferrer");
+      attr(div2, "class", "text-sm text-white text-opacity-30");
+      attr(div3, "class", "absolute right-0 bottom-0 py-2 px-3 flex items-center gap-x-2");
+      attr(footer, "class", "relative");
+      attr(main, "class", "flex-1 flex-col flex");
+      attr(div4, "class", "flex h-full");
     },
     m(target, anchor) {
-      append_hydration(document.head, meta0);
-      append_hydration(document.head, link0);
-      append_hydration(document.head, link1);
-      append_hydration(document.head, link2);
-      append_hydration(document.head, link3);
-      append_hydration(document.head, link4);
-      append_hydration(document.head, link5);
-      append_hydration(document.head, link6);
-      append_hydration(document.head, link7);
-      append_hydration(document.head, link8);
-      append_hydration(document.head, link9);
-      append_hydration(document.head, link10);
-      append_hydration(document.head, link11);
-      append_hydration(document.head, link12);
-      append_hydration(document.head, link13);
-      append_hydration(document.head, meta1);
-      append_hydration(document.head, meta2);
-      append_hydration(document.head, meta3);
       insert_hydration(target, t0, anchor);
-      insert_hydration(target, t1, anchor);
-      insert_hydration(target, div2, anchor);
-      append_hydration(div2, section0);
-      append_hydration(section0, div1);
+      insert_hydration(target, div4, anchor);
+      append_hydration(div4, aside);
+      append_hydration(aside, div1);
       append_hydration(div1, div0);
       mount_component(card0, div0, null);
-      append_hydration(div0, t2);
+      append_hydration(div0, t1);
       mount_component(card1, div0, null);
-      append_hydration(div0, t3);
+      append_hydration(div0, t2);
       mount_component(card2, div0, null);
-      append_hydration(div2, t4);
-      append_hydration(div2, section1);
-      if_blocks[current_block_type_index].m(section1, null);
-      insert_hydration(target, t5, anchor);
+      append_hydration(div4, t3);
+      append_hydration(div4, main);
+      append_hydration(main, section);
+      if_blocks[current_block_type_index].m(section, null);
+      append_hydration(main, t4);
+      append_hydration(main, footer);
+      append_hydration(footer, div3);
+      append_hydration(div3, a);
+      append_hydration(a, img);
+      append_hydration(div3, t5);
+      append_hydration(div3, div2);
+      append_hydration(div2, t6);
+      append_hydration(div2, t7);
+      insert_hydration(target, t8, anchor);
       if (if_block1)
         if_block1.m(target, anchor);
       insert_hydration(target, if_block1_anchor, anchor);
@@ -2967,7 +2692,7 @@ function create_fragment(ctx) {
       if (!mounted) {
         dispose = listen(document.body, "dragenter", stop_propagation(prevent_default(
           /*onDragEnter*/
-          ctx[12]
+          ctx[13]
         )));
         mounted = true;
       }
@@ -3026,7 +2751,7 @@ function create_fragment(ctx) {
           if_block0.p(ctx2, dirty);
         }
         transition_in(if_block0, 1);
-        if_block0.m(section1, null);
+        if_block0.m(section, null);
       }
       if (
         /*isDragging*/
@@ -3061,36 +2786,16 @@ function create_fragment(ctx) {
       current = false;
     },
     d(detaching) {
-      detach(meta0);
-      detach(link0);
-      detach(link1);
-      detach(link2);
-      detach(link3);
-      detach(link4);
-      detach(link5);
-      detach(link6);
-      detach(link7);
-      detach(link8);
-      detach(link9);
-      detach(link10);
-      detach(link11);
-      detach(link12);
-      detach(link13);
-      detach(meta1);
-      detach(meta2);
-      detach(meta3);
       if (detaching)
         detach(t0);
       if (detaching)
-        detach(t1);
-      if (detaching)
-        detach(div2);
+        detach(div4);
       destroy_component(card0);
       destroy_component(card1);
       destroy_component(card2);
       if_blocks[current_block_type_index].d();
       if (detaching)
-        detach(t5);
+        detach(t8);
       if (if_block1)
         if_block1.d(detaching);
       if (detaching)
@@ -3102,6 +2807,7 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let $progress;
+  const version = "0.2.0";
   let mounted = false;
   let isDragging = false;
   let loading = false;
@@ -3236,10 +2942,6 @@ function instance($$self, $$props, $$invalidate) {
     inputQuality = value;
     $$invalidate(8, inputQuality);
   }
-  function inputknob_value_binding(value) {
-    inputQuality = value;
-    $$invalidate(8, inputQuality);
-  }
   function inputnumber_value_binding_1(value) {
     inputWidth = value;
     $$invalidate(1, inputWidth);
@@ -3294,6 +2996,7 @@ function instance($$self, $$props, $$invalidate) {
     inputQuality,
     inputFit,
     $progress,
+    version,
     progress,
     onDragEnter,
     onDragLeave,
@@ -3301,7 +3004,6 @@ function instance($$self, $$props, $$invalidate) {
     onDrop,
     dragover_handler,
     inputnumber_value_binding,
-    inputknob_value_binding,
     inputnumber_value_binding_1,
     inputnumber_value_binding_2,
     inputselect_value_binding,
