@@ -12,6 +12,10 @@
   import { loadVips, resize, type Fit } from '$lib/utils/vips';
   import { svgToBlob } from '$lib/utils/svg';
 
+  import logo from '$assets/images/logo.svg';
+
+  const version = VERSION;
+
   type InlineResult = [
     filename: string,
     error: string | null,
@@ -174,49 +178,21 @@
   }
 </script>
 
-<svelte:head>
-  <title>WebP converter by dist.be</title>
-  <meta
-    name="description"
-    content="Convert Images to WebP for Faster Loading and Better User Experience. Start Optimizing Today!"
-  />
-
-  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
-  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
-  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
-  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
-  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="msapplication-TileColor" content="#ffffff" />
-  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-  <meta name="theme-color" content="#ffffff" />
-</svelte:head>
 <svelte:body on:dragenter|preventDefault|stopPropagation={onDragEnter} />
 
-<div class="flex flex-col h-full gap-y-6">
-  <section>
-    <div class="container mx-auto px-4">
-      <div class="flex gap-8 items-center justify-center flex-wrap">
-        <Card title="Quality" on={true} disabled>
+<div class="flex h-full">
+  <aside class="flex-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col">
+    <div class="flex-1">
+      <div class="">
+        <Card title="Settings" on={true} disabled>
           <InputGroup label="Quality">
             <div class="space-y-4">
               <InputNumber bind:value={inputQuality} max={100} min={0} step={1} />
-              <div class="w-28 mx-auto">
-                <InputKnob bind:value={inputQuality} max={100} min={0} />
-              </div>
             </div>
           </InputGroup>
         </Card>
-        <Card title="Size" bind:on={onSize} color={2}>
-          <div class="space-y-2">
+        <Card title="Size" bind:on={onSize}>
+          <div class="space-y-3">
             <InputGroup label="Width">
               <InputNumber bind:value={inputWidth} min={0} step={1} />
             </InputGroup>
@@ -231,7 +207,7 @@
             </InputGroup>
           </div>
         </Card>
-        <Card title="Scale" bind:on={onScale} color={3}>
+        <Card title="Scale" bind:on={onScale}>
           <div class="space-y-2">
             <InputGroup label="Scale">
               <InputNumber bind:value={inputScale} min={0} />
@@ -240,44 +216,54 @@
         </Card>
       </div>
     </div>
-  </section>
-  <section class="flex-1 flex items-center justify-center">
-    {#if loading}
-      <div class="text-white font-light text-center">
-        <div>Converting...</div>
-        <div class="text-2xl">{($progress * 100).toFixed(2)}%</div>
-      </div>
-    {:else}
-      <div class="dropzone space-y-4">
-        {#if results}
-          <div class="space-y-1">
-            <div class="text-white text-center">Done!</div>
-            <table>
-              {#each results as [filename, error, beforeSize, afterSize]}
-                <Result {filename} {error} {beforeSize} {afterSize} />
-              {/each}
-            </table>
-          </div>
-        {/if}
-        <div class="space-y-3">
-          <div>
-            <div class="text-white font-light text-center">
-              Drop your images here to get started!
+  </aside>
+  <main class="flex-1 flex-col flex">
+    <section class="flex-1 flex items-center justify-center">
+      {#if loading}
+        <div class="text-white font-light text-center">
+          <div>Converting...</div>
+          <div class="text-2xl">{($progress * 100).toFixed(2)}%</div>
+        </div>
+      {:else}
+        <div class="dropzone space-y-4">
+          {#if results}
+            <div class="space-y-1">
+              <div class="text-white text-center">Done!</div>
+              <table>
+                {#each results as [filename, error, beforeSize, afterSize]}
+                  <Result {filename} {error} {beforeSize} {afterSize} />
+                {/each}
+              </table>
             </div>
-            <div class="text-center">
-              <button
-                class="text-white font-light text-sm underline leading-tight"
-                on:click={onClickUpload}>or click to upload images</button
-              >
+          {/if}
+          <div class="space-y-3">
+            <div>
+              <div class="text-white text-opacity-75 font-light text-center text-2xl">
+                Drop your images here!
+              </div>
+              <div class="text-center">
+                <button
+                  class="text-white font-light text-sm underline leading-tight"
+                  on:click={onClickUpload}>or click to upload images</button
+                >
+              </div>
             </div>
-          </div>
-          <div class="text-white font-light text-center text-sm text-opacity-70">
-            Supports JPG, PNG, GIF, TIFF, WEBP, SVG.
+            <div class="text-white font-light text-center text-sm text-opacity-70">
+              Supports JPG, PNG, GIF, TIFF, WEBP, SVG.
+            </div>
           </div>
         </div>
+      {/if}
+    </section>
+    <footer class="relative">
+      <div class="absolute right-0 bottom-0 py-2 px-3 flex items-center gap-x-2">
+        <a href="https://github.com/distbe" target="_blank" rel="noopener noreferrer"
+          ><img src={logo} alt="dist.be" class="w-[54px] h-[24px]" /></a
+        >
+        <div class="text-sm text-white text-opacity-30">v{version}</div>
       </div>
-    {/if}
-  </section>
+    </footer>
+  </main>
 </div>
 {#if isDragging}
   <div
@@ -289,8 +275,47 @@
 {/if}
 
 <style>
+  @property --rotate {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
   .dropzone {
-    @apply p-8 rounded-2xl border border-dashed border-white border-opacity-50;
-    box-shadow: 0 0 75vmin rgba(255, 255, 255, 0.75);
+    @apply relative p-8;
+    background: #191c29;
+    border-radius: 8px;
+  }
+
+  .dropzone::before {
+    @apply -inset-[4px];
+    content: '';
+    border-radius: 12px;
+    position: absolute;
+    z-index: -1;
+    animation: rotate 5s linear infinite;
+    background-image: linear-gradient(var(--rotate), #dd31d2, #519cff);
+  }
+  .dropzone::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: -1;
+    transform: scale(0.75);
+    filter: blur(60px);
+    animation: rotate 5s linear infinite;
+    background-image: linear-gradient(var(--rotate), #dd31d2, #519cff);
+  }
+
+  @keyframes rotate {
+    0% {
+      --rotate: 0deg;
+    }
+    100% {
+      --rotate: 360deg;
+    }
   }
 </style>

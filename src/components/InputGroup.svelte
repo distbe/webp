@@ -9,7 +9,7 @@
 
 <style>
   .input-group {
-    @apply w-full space-y-0.5;
+    @apply w-full space-y-1;
   }
   .input-group__label {
     @apply text-xs text-white text-opacity-75;

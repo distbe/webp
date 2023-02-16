@@ -24,7 +24,7 @@
 
 <style>
   .input-number {
-    @apply border border-white rounded-md w-full py-2 px-3 text-white leading-tight bg-transparent border-opacity-70 outline-none;
+    @apply rounded-md w-full py-2 px-3 text-white leading-tight bg-white bg-opacity-5 outline-none;
   }
   .input-number:focus {
     @apply ring-blue ring-2;

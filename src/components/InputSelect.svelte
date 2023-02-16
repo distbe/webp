@@ -25,7 +25,7 @@
 
 <style>
   .input-select {
-    @apply border border-white rounded-md w-full py-2 px-3 text-white leading-tight bg-transparent border-opacity-70 outline-none appearance-none;
+    @apply rounded-md w-full py-2 px-3 text-white leading-tight bg-white bg-opacity-5 outline-none appearance-none;
   }
   .input-select:focus {
     @apply ring-blue ring-2;
