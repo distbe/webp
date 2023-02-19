@@ -8,11 +8,10 @@
   import InputNumber from '$components/InputNumber.svelte';
   import InputSelect from '$components/InputSelect.svelte';
   import { download } from '$lib/utils/blob';
-  import { loadVips, resize, type Fit } from '$lib/utils/vips';
-  import { svgToBlob } from '$lib/utils/svg';
+  import { loadVips, type Fit } from '$lib/utils/vips';
 
   import logo from '$assets/images/logo.svg';
-  import { dataTransferToBuffers, isFileBufferError, type FileBufferResult } from '$lib/utils/file';
+  import { dataTransferToBuffers, type FileBufferResult } from '$lib/utils/file';
   import { transformFileBuffer } from '$lib/utils/transform';
 
   const version = VERSION;
@@ -27,12 +26,11 @@
   let mounted = false;
   let isDragging = false;
 
-  let errorMessage: string | null = null;
   let loading = false;
   let progress = tweened(0);
   let results: InlineResult[] | null = null;
 
-  let inputQuality = 100;
+  let inputQuality: number | null = null;
 
   let onSize = false;
   let inputWidth: number | null = null;
@@ -48,9 +46,48 @@
   $: toggledOnScale(onScale);
   $: onInputScale(inputScale);
 
+  $: saveState({
+    inputQuality,
+    onSize,
+    inputWidth,
+    inputHeight,
+    inputFit,
+    onScale,
+    inputScale
+  });
+
   onMount(() => {
+    const state = localStorage.getItem('state');
+    if (state) {
+      try {
+        const parsed = JSON.parse(state);
+        inputQuality = parsed.inputQuality;
+        onSize = parsed.onSize;
+        inputWidth = parsed.inputWidth;
+        inputHeight = parsed.inputHeight;
+        inputFit = parsed.inputFit;
+        onScale = parsed.onScale;
+        inputScale = parsed.inputScale;
+      } catch {
+        //
+      }
+    }
+    inputQuality = inputQuality ?? 100; // default
     mounted = true;
   });
+
+  function saveState(state: {
+    inputQuality: number | null;
+    onSize: boolean;
+    inputWidth: number | null;
+    inputHeight: number | null;
+    inputFit: Fit;
+    onScale: boolean;
+    inputScale: number;
+  }) {
+    if (!mounted) return;
+    localStorage.setItem('state', JSON.stringify(state));
+  }
 
   function toggledOnSize(onSize: boolean) {
     if (!mounted) return;
@@ -125,7 +162,7 @@
       vips,
       files,
       {
-        quality: inputQuality,
+        quality: inputQuality ?? 100,
         width: onSize ? inputWidth : null,
         height: onSize ? inputHeight : null,
         fit: onSize ? inputFit : null,
