@@ -212,8 +212,10 @@
 
 <svelte:body on:dragenter|preventDefault|stopPropagation={onDragEnter} />
 
-<div class="flex h-full">
-  <aside class="flex-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col">
+<div class="flex h-full max-md:flex-col">
+  <aside
+    class="basis-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col max-md:basis-[0] max-lg:basis-[240px]"
+  >
     <div class="flex-1">
       <div class="">
         <Card title="Settings" on={true} disabled>
@@ -249,7 +251,7 @@
       </div>
     </div>
   </aside>
-  <main class="flex-1 flex-col flex">
+  <main class="flex-1 flex-col flex max-md:flex-[300px] max-md:flex-shrink-0 px-4">
     <section class="flex-1 flex items-center justify-center">
       {#if loading}
         <div class="text-white font-light text-center">
