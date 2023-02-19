@@ -385,6 +385,10 @@ function create_if_block_1$2(ctx) {
 function create_fragment$6(ctx) {
   let tr;
   let td;
+  let t0_value = trimSlash(
+    /*filename*/
+    ctx[0]
+  ) + "";
   let t0;
   let t1;
   function select_block_type(ctx2, dirty) {
@@ -401,10 +405,7 @@ function create_fragment$6(ctx) {
     c() {
       tr = element("tr");
       td = element("td");
-      t0 = text(
-        /*filename*/
-        ctx[0]
-      );
+      t0 = text(t0_value);
       t1 = space();
       if_block.c();
       this.h();
@@ -414,11 +415,7 @@ function create_fragment$6(ctx) {
       var tr_nodes = children(tr);
       td = claim_element(tr_nodes, "TD", { class: true });
       var td_nodes = children(td);
-      t0 = claim_text(
-        td_nodes,
-        /*filename*/
-        ctx[0]
-      );
+      t0 = claim_text(td_nodes, t0_value);
       td_nodes.forEach(detach);
       t1 = claim_space(tr_nodes);
       if_block.l(tr_nodes);
@@ -438,12 +435,11 @@ function create_fragment$6(ctx) {
     },
     p(ctx2, [dirty]) {
       if (dirty & /*filename*/
-      1)
-        set_data(
-          t0,
-          /*filename*/
-          ctx2[0]
-        );
+      1 && t0_value !== (t0_value = trimSlash(
+        /*filename*/
+        ctx2[0]
+      ) + ""))
+        set_data(t0, t0_value);
       if (current_block_type === (current_block_type = select_block_type(ctx2)) && if_block) {
         if_block.p(ctx2, dirty);
       } else {
@@ -471,6 +467,9 @@ function formatBytes(size) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
   const i = Math.floor(Math.log(size) / Math.log(k));
   return parseFloat((size / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+}
+function trimSlash(filename2) {
+  return filename2.replace(/^\/+/, "");
 }
 function instance$6($$self, $$props, $$invalidate) {
   let rate;
@@ -1028,7 +1027,6 @@ class InputGroup extends SvelteComponent {
     init(this, options, instance$3, create_fragment$3, safe_not_equal, { label: 0 });
   }
 }
-const InputKnob_svelte_svelte_type_style_lang = "";
 const InputNumber_svelte_svelte_type_style_lang = "";
 function create_fragment$2(ctx) {
   let input;
@@ -1475,6 +1473,72 @@ function embed([width, height], [targetWidth, targetHeight]) {
     ~~((targetHeight - height) / 2)
   ];
 }
+const logo = "" + new URL("../../assets/logo-ec8219a6.svg", import.meta.url).href;
+function isFileBufferError(result) {
+  return "error" in result;
+}
+const isAvailableWebkitGetAsEntry = typeof DataTransferItem !== "undefined" && "webkitGetAsEntry" in DataTransferItem.prototype;
+function isDirectoryEntry(entry) {
+  return entry.isDirectory;
+}
+function isFileEntry(entry) {
+  return entry.isFile;
+}
+async function traverseEntries(entries) {
+  return Promise.all(entries.map((entry) => {
+    if (!entry) {
+      return Promise.resolve([]);
+    }
+    if (isDirectoryEntry(entry)) {
+      return new Promise((resolve) => {
+        const reader = entry.createReader();
+        reader.readEntries((entries2) => {
+          resolve(traverseEntries(entries2));
+        });
+      });
+    }
+    if (isFileEntry(entry)) {
+      return new Promise((resolve) => {
+        entry.file(async (f) => {
+          resolve({
+            name: entry.fullPath,
+            type: f.type,
+            size: f.size,
+            buffer: await f.arrayBuffer()
+          });
+        });
+      });
+    }
+    return Promise.resolve({
+      name: entry.fullPath,
+      error: new Error("Unknown entry type")
+    });
+  })).then((e) => e.flat());
+}
+async function dataTransferToBuffers(transfer) {
+  if (!transfer) {
+    return [];
+  }
+  if (!isAvailableWebkitGetAsEntry) {
+    return await Promise.all([...transfer.files].map(async (file) => {
+      try {
+        const buffer = await file.arrayBuffer();
+        return {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          buffer
+        };
+      } catch (e) {
+        return {
+          name: file.name,
+          error: e
+        };
+      }
+    }));
+  }
+  return await traverseEntries([...transfer.items].map((item) => item.webkitGetAsEntry()));
+}
 function svgImageSize(svg) {
   var _a, _b;
   const width = (_a = svg.match(/width="(\d+)"/)) == null ? void 0 : _a[1];
@@ -1514,7 +1578,77 @@ async function svgToBlob(file) {
   }
   return new Blob([uInt8Array], { type: "image/png" });
 }
-const logo = "" + new URL("../../assets/logo-ec8219a6.svg", import.meta.url).href;
+function hasMessage(e) {
+  return typeof e === "object" && e !== null && "message" in e;
+}
+function errorToErrorMessage(e) {
+  if (typeof e === "string") {
+    return e;
+  }
+  if (e instanceof Error) {
+    return e.message;
+  }
+  return "Unknown error";
+}
+async function transformFileBuffer(vips, files, options, onProgress) {
+  if (files.length === 0) {
+    return [];
+  }
+  onProgress(0);
+  const results = [];
+  for (const [fileIndex, file] of files.entries()) {
+    onProgress(fileIndex / files.length);
+    if (isFileBufferError(file)) {
+      results.push({
+        filename: file.name,
+        size: 0,
+        error: errorToErrorMessage(file.error),
+        blob: null
+      });
+      continue;
+    }
+    try {
+      let input;
+      if (file.type === "image/svg+xml") {
+        input = await svgToBlob(new Blob([file.buffer])).then((b) => b.arrayBuffer());
+      } else {
+        input = await file.buffer;
+      }
+      let im = vips.Image.newFromBuffer(input, file.name);
+      if ((options.width || options.height) && options.fit) {
+        im = resize(vips, im, [options.width ?? 0, options.height ?? 0], options.fit);
+      } else if (options.scale) {
+        im = im.resize(options.scale, {});
+      }
+      const buffer = await im.writeToBuffer(".webp", {
+        Q: ~~options.quality
+        // to int
+      });
+      const blob = new Blob([buffer], { type: "image/webp" });
+      results.push({
+        filename: file.name,
+        size: file.size,
+        error: null,
+        blob
+      });
+    } catch (e) {
+      let errorMessage = null;
+      if (hasMessage(e) && e.message.includes("unable to load from buffer")) {
+        errorMessage = "Unsupported image format!";
+      } else {
+        errorMessage = errorToErrorMessage(e);
+      }
+      results.push({
+        filename: file.name,
+        size: file.size,
+        error: errorMessage,
+        blob: null
+      });
+    }
+  }
+  onProgress(1);
+  return results;
+}
 const _page_svelte_svelte_type_style_lang = "";
 function get_each_context(ctx, list, i) {
   const child_ctx = ctx.slice();
@@ -1535,10 +1669,10 @@ function create_default_slot_7(ctx) {
   let inputnumber_props = { max: 100, min: 0, step: 1 };
   if (
     /*inputQuality*/
-    ctx[8] !== void 0
+    ctx[0] !== void 0
   ) {
     inputnumber_props.value = /*inputQuality*/
-    ctx[8];
+    ctx[0];
   }
   inputnumber = new InputNumber({ props: inputnumber_props });
   binding_callbacks.push(() => bind(inputnumber, "value", inputnumber_value_binding));
@@ -1566,10 +1700,10 @@ function create_default_slot_7(ctx) {
     p(ctx2, dirty) {
       const inputnumber_changes = {};
       if (!updating_value && dirty[0] & /*inputQuality*/
-      256) {
+      1) {
         updating_value = true;
         inputnumber_changes.value = /*inputQuality*/
-        ctx2[8];
+        ctx2[0];
         add_flush_callback(() => updating_value = false);
       }
       inputnumber.$set(inputnumber_changes);
@@ -1615,7 +1749,7 @@ function create_default_slot_6(ctx) {
     p(ctx2, dirty) {
       const inputgroup_changes = {};
       if (dirty[0] & /*inputQuality*/
-      256 | dirty[1] & /*$$scope*/
+      1 | dirty[1] & /*$$scope*/
       128) {
         inputgroup_changes.$$scope = { dirty, ctx: ctx2 };
       }
@@ -1646,10 +1780,10 @@ function create_default_slot_5(ctx) {
   let inputnumber_props = { min: 0, step: 1 };
   if (
     /*inputWidth*/
-    ctx[1] !== void 0
+    ctx[2] !== void 0
   ) {
     inputnumber_props.value = /*inputWidth*/
-    ctx[1];
+    ctx[2];
   }
   inputnumber = new InputNumber({ props: inputnumber_props });
   binding_callbacks.push(() => bind(inputnumber, "value", inputnumber_value_binding_1));
@@ -1667,10 +1801,10 @@ function create_default_slot_5(ctx) {
     p(ctx2, dirty) {
       const inputnumber_changes = {};
       if (!updating_value && dirty[0] & /*inputWidth*/
-      2) {
+      4) {
         updating_value = true;
         inputnumber_changes.value = /*inputWidth*/
-        ctx2[1];
+        ctx2[2];
         add_flush_callback(() => updating_value = false);
       }
       inputnumber.$set(inputnumber_changes);
@@ -1700,10 +1834,10 @@ function create_default_slot_4(ctx) {
   let inputnumber_props = { min: 0, step: 1 };
   if (
     /*inputHeight*/
-    ctx[2] !== void 0
+    ctx[3] !== void 0
   ) {
     inputnumber_props.value = /*inputHeight*/
-    ctx[2];
+    ctx[3];
   }
   inputnumber = new InputNumber({ props: inputnumber_props });
   binding_callbacks.push(() => bind(inputnumber, "value", inputnumber_value_binding_2));
@@ -1721,10 +1855,10 @@ function create_default_slot_4(ctx) {
     p(ctx2, dirty) {
       const inputnumber_changes = {};
       if (!updating_value && dirty[0] & /*inputHeight*/
-      4) {
+      8) {
         updating_value = true;
         inputnumber_changes.value = /*inputHeight*/
-        ctx2[2];
+        ctx2[3];
         add_flush_callback(() => updating_value = false);
       }
       inputnumber.$set(inputnumber_changes);
@@ -1756,10 +1890,10 @@ function create_default_slot_3(ctx) {
   };
   if (
     /*inputFit*/
-    ctx[9] !== void 0
+    ctx[4] !== void 0
   ) {
     inputselect_props.value = /*inputFit*/
-    ctx[9];
+    ctx[4];
   }
   inputselect = new InputSelect({ props: inputselect_props });
   binding_callbacks.push(() => bind(inputselect, "value", inputselect_value_binding));
@@ -1777,10 +1911,10 @@ function create_default_slot_3(ctx) {
     p(ctx2, dirty) {
       const inputselect_changes = {};
       if (!updating_value && dirty[0] & /*inputFit*/
-      512) {
+      16) {
         updating_value = true;
         inputselect_changes.value = /*inputFit*/
-        ctx2[9];
+        ctx2[4];
         add_flush_callback(() => updating_value = false);
       }
       inputselect.$set(inputselect_changes);
@@ -1865,21 +1999,21 @@ function create_default_slot_2(ctx) {
     p(ctx2, dirty) {
       const inputgroup0_changes = {};
       if (dirty[0] & /*inputWidth*/
-      2 | dirty[1] & /*$$scope*/
+      4 | dirty[1] & /*$$scope*/
       128) {
         inputgroup0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup0.$set(inputgroup0_changes);
       const inputgroup1_changes = {};
       if (dirty[0] & /*inputHeight*/
-      4 | dirty[1] & /*$$scope*/
+      8 | dirty[1] & /*$$scope*/
       128) {
         inputgroup1_changes.$$scope = { dirty, ctx: ctx2 };
       }
       inputgroup1.$set(inputgroup1_changes);
       const inputgroup2_changes = {};
       if (dirty[0] & /*inputFit*/
-      512 | dirty[1] & /*$$scope*/
+      16 | dirty[1] & /*$$scope*/
       128) {
         inputgroup2_changes.$$scope = { dirty, ctx: ctx2 };
       }
@@ -1918,10 +2052,10 @@ function create_default_slot_1(ctx) {
   let inputnumber_props = { min: 0 };
   if (
     /*inputScale*/
-    ctx[4] !== void 0
+    ctx[6] !== void 0
   ) {
     inputnumber_props.value = /*inputScale*/
-    ctx[4];
+    ctx[6];
   }
   inputnumber = new InputNumber({ props: inputnumber_props });
   binding_callbacks.push(() => bind(inputnumber, "value", inputnumber_value_binding_3));
@@ -1939,10 +2073,10 @@ function create_default_slot_1(ctx) {
     p(ctx2, dirty) {
       const inputnumber_changes = {};
       if (!updating_value && dirty[0] & /*inputScale*/
-      16) {
+      64) {
         updating_value = true;
         inputnumber_changes.value = /*inputScale*/
-        ctx2[4];
+        ctx2[6];
         add_flush_callback(() => updating_value = false);
       }
       inputnumber.$set(inputnumber_changes);
@@ -1997,7 +2131,7 @@ function create_default_slot(ctx) {
     p(ctx2, dirty) {
       const inputgroup_changes = {};
       if (dirty[0] & /*inputScale*/
-      16 | dirty[1] & /*$$scope*/
+      64 | dirty[1] & /*$$scope*/
       128) {
         inputgroup_changes.$$scope = { dirty, ctx: ctx2 };
       }
@@ -2039,7 +2173,7 @@ function create_else_block(ctx) {
   let dispose;
   let if_block = (
     /*results*/
-    ctx[7] && create_if_block_2(ctx)
+    ctx[9] && create_if_block_2(ctx)
   );
   return {
     c() {
@@ -2130,12 +2264,12 @@ function create_else_block(ctx) {
     p(ctx2, dirty) {
       if (
         /*results*/
-        ctx2[7]
+        ctx2[9]
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
           if (dirty[0] & /*results*/
-          128) {
+          512) {
             transition_in(if_block, 1);
           }
         } else {
@@ -2247,7 +2381,7 @@ function create_if_block_2(ctx) {
   let current;
   let each_value = (
     /*results*/
-    ctx[7]
+    ctx[9]
   );
   let each_blocks = [];
   for (let i = 0; i < each_value.length; i += 1) {
@@ -2302,9 +2436,9 @@ function create_if_block_2(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty[0] & /*results*/
-      128) {
+      512) {
         each_value = /*results*/
-        ctx2[7];
+        ctx2[9];
         let i;
         for (i = 0; i < each_value.length; i += 1) {
           const child_ctx = get_each_context(ctx2, each_value, i);
@@ -2384,19 +2518,19 @@ function create_each_block(ctx) {
     p(ctx2, dirty) {
       const result_changes = {};
       if (dirty[0] & /*results*/
-      128)
+      512)
         result_changes.filename = /*filename*/
         ctx2[32];
       if (dirty[0] & /*results*/
-      128)
+      512)
         result_changes.error = /*error*/
         ctx2[33];
       if (dirty[0] & /*results*/
-      128)
+      512)
         result_changes.beforeSize = /*beforeSize*/
         ctx2[34];
       if (dirty[0] & /*results*/
-      128)
+      512)
         result_changes.afterSize = /*afterSize*/
         ctx2[35];
       result.$set(result_changes);
@@ -2514,10 +2648,10 @@ function create_fragment(ctx) {
   };
   if (
     /*onSize*/
-    ctx[0] !== void 0
+    ctx[1] !== void 0
   ) {
     card1_props.on = /*onSize*/
-    ctx[0];
+    ctx[1];
   }
   card1 = new Card({ props: card1_props });
   binding_callbacks.push(() => bind(card1, "on", card1_on_binding));
@@ -2531,10 +2665,10 @@ function create_fragment(ctx) {
   };
   if (
     /*onScale*/
-    ctx[3] !== void 0
+    ctx[5] !== void 0
   ) {
     card2_props.on = /*onScale*/
-    ctx[3];
+    ctx[5];
   }
   card2 = new Card({ props: card2_props });
   binding_callbacks.push(() => bind(card2, "on", card2_on_binding));
@@ -2543,7 +2677,7 @@ function create_fragment(ctx) {
   function select_block_type(ctx2, dirty) {
     if (
       /*loading*/
-      ctx2[6]
+      ctx2[8]
     )
       return 0;
     return 1;
@@ -2552,7 +2686,7 @@ function create_fragment(ctx) {
   if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
   let if_block1 = (
     /*isDragging*/
-    ctx[5] && create_if_block(ctx)
+    ctx[7] && create_if_block(ctx)
   );
   return {
     c() {
@@ -2700,36 +2834,36 @@ function create_fragment(ctx) {
     p(ctx2, dirty) {
       const card0_changes = {};
       if (dirty[0] & /*inputQuality*/
-      256 | dirty[1] & /*$$scope*/
+      1 | dirty[1] & /*$$scope*/
       128) {
         card0_changes.$$scope = { dirty, ctx: ctx2 };
       }
       card0.$set(card0_changes);
       const card1_changes = {};
       if (dirty[0] & /*inputFit, inputHeight, inputWidth*/
-      518 | dirty[1] & /*$$scope*/
+      28 | dirty[1] & /*$$scope*/
       128) {
         card1_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_on && dirty[0] & /*onSize*/
-      1) {
+      2) {
         updating_on = true;
         card1_changes.on = /*onSize*/
-        ctx2[0];
+        ctx2[1];
         add_flush_callback(() => updating_on = false);
       }
       card1.$set(card1_changes);
       const card2_changes = {};
       if (dirty[0] & /*inputScale*/
-      16 | dirty[1] & /*$$scope*/
+      64 | dirty[1] & /*$$scope*/
       128) {
         card2_changes.$$scope = { dirty, ctx: ctx2 };
       }
       if (!updating_on_1 && dirty[0] & /*onScale*/
-      8) {
+      32) {
         updating_on_1 = true;
         card2_changes.on = /*onScale*/
-        ctx2[3];
+        ctx2[5];
         add_flush_callback(() => updating_on_1 = false);
       }
       card2.$set(card2_changes);
@@ -2755,7 +2889,7 @@ function create_fragment(ctx) {
       }
       if (
         /*isDragging*/
-        ctx2[5]
+        ctx2[7]
       ) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
@@ -2807,14 +2941,14 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let $progress;
-  const version = "0.2.0";
+  const version = "0.3.0";
   let mounted = false;
   let isDragging = false;
   let loading = false;
   let progress = tweened(0);
   component_subscribe($$self, progress, (value) => $$invalidate(10, $progress = value));
   let results = null;
-  let inputQuality = 100;
+  let inputQuality = null;
   let onSize = false;
   let inputWidth = null;
   let inputHeight = null;
@@ -2822,27 +2956,47 @@ function instance($$self, $$props, $$invalidate) {
   let onScale = false;
   let inputScale = 1;
   onMount(() => {
+    const state = localStorage.getItem("state");
+    if (state) {
+      try {
+        const parsed = JSON.parse(state);
+        $$invalidate(0, inputQuality = parsed.inputQuality);
+        $$invalidate(1, onSize = parsed.onSize);
+        $$invalidate(2, inputWidth = parsed.inputWidth);
+        $$invalidate(3, inputHeight = parsed.inputHeight);
+        $$invalidate(4, inputFit = parsed.inputFit);
+        $$invalidate(5, onScale = parsed.onScale);
+        $$invalidate(6, inputScale = parsed.inputScale);
+      } catch {
+      }
+    }
+    $$invalidate(0, inputQuality = inputQuality ?? 100);
     mounted = true;
   });
+  function saveState(state) {
+    if (!mounted)
+      return;
+    localStorage.setItem("state", JSON.stringify(state));
+  }
   function toggledOnSize(onSize2) {
     if (!mounted)
       return;
     if (onSize2 && onScale) {
-      $$invalidate(3, onScale = false);
+      $$invalidate(5, onScale = false);
     }
   }
   function toggledOnScale(onScale2) {
     if (!mounted)
       return;
     if (onScale2 && onSize) {
-      $$invalidate(0, onSize = false);
+      $$invalidate(1, onSize = false);
     }
   }
   function onInputSize(width, height) {
     if (!mounted)
       return;
     if ((width || height) && !onSize) {
-      $$invalidate(0, onSize = true);
+      $$invalidate(1, onSize = true);
       toggledOnSize(onSize);
     }
   }
@@ -2850,151 +3004,160 @@ function instance($$self, $$props, $$invalidate) {
     if (!mounted)
       return;
     if (scale && !onScale) {
-      $$invalidate(3, onScale = true);
+      $$invalidate(5, onScale = true);
       toggledOnScale(onScale);
     }
   }
   function onDragEnter(e) {
-    $$invalidate(5, isDragging = true);
+    $$invalidate(7, isDragging = true);
   }
   function onDragLeave(e) {
-    $$invalidate(5, isDragging = false);
+    $$invalidate(7, isDragging = false);
   }
   async function onClickUpload() {
     const fileDialog = await __vitePreload(() => import("../../chunks/file-dialog.min-2f0a7f89.js").then((n) => n.f), true ? [] : void 0, import.meta.url).then((m) => m.default);
     const files = await fileDialog({ accept: "image/*", multiple: true });
-    await transform([...files]);
+    if (files.length === 0) {
+      return;
+    }
+    const buffers = await Promise.all([...files].map(async (f) => {
+      return {
+        name: f.name,
+        size: f.size,
+        type: f.type,
+        buffer: await f.arrayBuffer()
+      };
+    }));
+    await transform(buffers);
   }
   async function onDrop(e) {
-    var _a;
-    $$invalidate(5, isDragging = false);
-    await transform([...((_a = e.dataTransfer) == null ? void 0 : _a.files) ?? []]);
+    $$invalidate(7, isDragging = false);
+    transform(await dataTransferToBuffers(e.dataTransfer));
   }
   async function transform(files) {
     if (files.length === 0) {
       return;
     }
-    $$invalidate(6, loading = true);
-    progress.set(0);
+    $$invalidate(8, loading = true);
     const vips = await loadVips();
-    const zip = files.length > 1 ? await __vitePreload(() => import("../../chunks/jszip.min-e4871d4f.js").then((n) => n.j), true ? [] : void 0, import.meta.url).then((m) => new m.default()) : null;
+    const transformResults = await transformFileBuffer(
+      vips,
+      files,
+      {
+        quality: inputQuality ?? 100,
+        width: onSize ? inputWidth : null,
+        height: onSize ? inputHeight : null,
+        fit: onSize ? inputFit : null,
+        scale: onScale ? inputScale : null
+      },
+      (p) => {
+        progress.set(p);
+      }
+    );
+    $$invalidate(9, results = transformResults.map((r) => {
+      var _a;
+      return [r.filename, r.error, r.size, ((_a = r.blob) == null ? void 0 : _a.size) ?? 0];
+    }));
+    $$invalidate(8, loading = false);
+    if (transformResults.length === 1 && transformResults[0].blob) {
+      const basename = transformResults[0].filename.replace(/\.[^/.]+$/, "");
+      download(transformResults[0].blob, `${basename}.webp`);
+      return;
+    }
+    const zip = await __vitePreload(() => import("../../chunks/jszip.min-e4871d4f.js").then((n) => n.j), true ? [] : void 0, import.meta.url).then((m) => new m.default());
     const filenames = /* @__PURE__ */ new Set();
-    const nextResults = [];
-    for (const [fileIndex, file] of files.entries()) {
-      progress.set(fileIndex / files.length);
-      let blob = null;
-      let errorMessage2 = null;
-      try {
-        let input;
-        if (file.type === "image/svg+xml") {
-          input = await svgToBlob(file).then((b) => b.arrayBuffer());
-        } else {
-          input = await file.arrayBuffer();
-        }
-        let im = vips.Image.newFromBuffer(input, file.name);
-        if (onSize && (inputWidth || inputHeight)) {
-          im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
-        } else if (onScale && inputScale) {
-          im = im.resize(inputScale, {});
-        }
-        const buffer = await im.writeToBuffer(".webp", { Q: ~~inputQuality });
-        blob = new Blob([buffer], { type: "image/webp" });
-      } catch (e) {
-        if (e.message.includes("unable to load from buffer")) {
-          errorMessage2 = "Unsupported image format!";
-        } else {
-          errorMessage2 = e.message;
-        }
+    for (const { blob: blob2, filename } of transformResults) {
+      if (!blob2) {
+        continue;
       }
-      nextResults.push([file.name, errorMessage2, file.size, (blob == null ? void 0 : blob.size) ?? 0]);
-      if (blob) {
-        const filename = file.name.replace(/\.[^/.]+$/, "");
-        if (files.length === 1) {
-          download(blob, `${filename}.webp`);
-          done();
-          return;
-        } else {
-          let newFilename = filename;
-          let i = 1;
-          while (filenames.has(newFilename)) {
-            newFilename = `${filename} (${i})`;
-            i++;
-          }
-          zip.file(`${newFilename}.webp`, blob);
-        }
+      const basename = filename.replace(/\.[^/.]+$/, "");
+      let newFilename = basename;
+      let i = 1;
+      while (filenames.has(newFilename)) {
+        newFilename = `${basename} (${i})`;
+        i++;
       }
+      filenames.add(newFilename);
+      zip.file(`${newFilename}.webp`, blob2);
     }
-    if (zip) {
-      const blob = await zip.generateAsync({ type: "blob" });
-      download(blob, "images.zip");
+    if (filenames.size === 0) {
+      return;
     }
-    done();
-    function done() {
-      $$invalidate(6, loading = false);
-      progress.set(1);
-      $$invalidate(7, results = nextResults);
-    }
+    const blob = await zip.generateAsync({ type: "blob" });
+    download(blob, "images.zip");
   }
   function dragover_handler(event) {
     bubble.call(this, $$self, event);
   }
   function inputnumber_value_binding(value) {
     inputQuality = value;
-    $$invalidate(8, inputQuality);
+    $$invalidate(0, inputQuality);
   }
   function inputnumber_value_binding_1(value) {
     inputWidth = value;
-    $$invalidate(1, inputWidth);
+    $$invalidate(2, inputWidth);
   }
   function inputnumber_value_binding_2(value) {
     inputHeight = value;
-    $$invalidate(2, inputHeight);
+    $$invalidate(3, inputHeight);
   }
   function inputselect_value_binding(value) {
     inputFit = value;
-    $$invalidate(9, inputFit);
+    $$invalidate(4, inputFit);
   }
   function card1_on_binding(value) {
     onSize = value;
-    $$invalidate(0, onSize);
+    $$invalidate(1, onSize);
   }
   function inputnumber_value_binding_3(value) {
     inputScale = value;
-    $$invalidate(4, inputScale);
+    $$invalidate(6, inputScale);
   }
   function card2_on_binding(value) {
     onScale = value;
-    $$invalidate(3, onScale);
+    $$invalidate(5, onScale);
   }
   $$self.$$.update = () => {
     if ($$self.$$.dirty[0] & /*onSize*/
-    1) {
+    2) {
       toggledOnSize(onSize);
     }
     if ($$self.$$.dirty[0] & /*inputWidth, inputHeight*/
-    6) {
+    12) {
       onInputSize(inputWidth, inputHeight);
     }
     if ($$self.$$.dirty[0] & /*onScale*/
-    8) {
+    32) {
       toggledOnScale(onScale);
     }
     if ($$self.$$.dirty[0] & /*inputScale*/
-    16) {
+    64) {
       onInputScale(inputScale);
+    }
+    if ($$self.$$.dirty[0] & /*inputQuality, onSize, inputWidth, inputHeight, inputFit, onScale, inputScale*/
+    127) {
+      saveState({
+        inputQuality,
+        onSize,
+        inputWidth,
+        inputHeight,
+        inputFit,
+        onScale,
+        inputScale
+      });
     }
   };
   return [
+    inputQuality,
     onSize,
     inputWidth,
     inputHeight,
+    inputFit,
     onScale,
     inputScale,
     isDragging,
     loading,
     results,
-    inputQuality,
-    inputFit,
     $progress,
     version,
     progress,
