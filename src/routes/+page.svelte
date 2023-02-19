@@ -5,7 +5,6 @@
   import Result from '$components/Result.svelte';
   import Card from '$components/Card.svelte';
   import InputGroup from '$components/InputGroup.svelte';
-  import InputKnob from '$components/InputKnob.svelte';
   import InputNumber from '$components/InputNumber.svelte';
   import InputSelect from '$components/InputSelect.svelte';
   import { download } from '$lib/utils/blob';
@@ -13,6 +12,8 @@
   import { svgToBlob } from '$lib/utils/svg';
 
   import logo from '$assets/images/logo.svg';
+  import { dataTransferToBuffers, isFileBufferError, type FileBufferResult } from '$lib/utils/file';
+  import { transformFileBuffer } from '$lib/utils/transform';
 
   const version = VERSION;
 
@@ -92,89 +93,83 @@
   async function onClickUpload() {
     const fileDialog = await import('file-dialog').then((m) => m.default);
     const files = await fileDialog({ accept: 'image/*', multiple: true });
-    await transform([...files]);
+    if (files.length === 0) {
+      return;
+    }
+    const buffers = await Promise.all(
+      [...files].map(async (f): Promise<FileBufferResult> => {
+        return {
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          buffer: await f.arrayBuffer()
+        };
+      })
+    );
+    await transform(buffers);
   }
 
   async function onDrop(e: DragEvent) {
     isDragging = false;
-    await transform([...(e.dataTransfer?.files ?? [])]);
+    transform(await dataTransferToBuffers(e.dataTransfer));
   }
 
-  async function transform(files: File[]) {
+  async function transform(files: FileBufferResult[]) {
     if (files.length === 0) {
       return;
     }
 
     loading = true;
-    errorMessage = null;
-    progress.set(0);
     const vips = await loadVips();
+    const transformResults = await transformFileBuffer(
+      vips,
+      files,
+      {
+        quality: inputQuality,
+        width: onSize ? inputWidth : null,
+        height: onSize ? inputHeight : null,
+        fit: onSize ? inputFit : null,
+        scale: onScale ? inputScale : null
+      },
+      (p) => {
+        progress.set(p);
+      }
+    );
 
-    const zip = files.length > 1 ? await import('jszip').then((m) => new m.default()) : null;
+    results = transformResults.map((r) => {
+      return [r.filename, r.error, r.size, r.blob?.size ?? 0];
+    });
+    loading = false;
+
+    if (transformResults.length === 1 && transformResults[0].blob) {
+      const basename = transformResults[0].filename.replace(/\.[^/.]+$/, '');
+      download(transformResults[0].blob, `${basename}.webp`);
+      return;
+    }
+
+    const zip = await import('jszip').then((m) => new m.default());
     const filenames = new Set<string>();
-
-    const nextResults: InlineResult[] = [];
-    for (const [fileIndex, file] of files.entries()) {
-      progress.set(fileIndex / files.length);
-
-      let blob: Blob | null = null;
-      let errorMessage: string | null = null;
-      try {
-        let input: ArrayBuffer;
-        if (file.type === 'image/svg+xml') {
-          input = await svgToBlob(file).then((b) => b.arrayBuffer());
-        } else {
-          input = await file.arrayBuffer();
-        }
-        let im = vips.Image.newFromBuffer(input, file.name);
-        if (onSize && (inputWidth || inputHeight)) {
-          im = resize(vips, im, [inputWidth ?? 0, inputHeight ?? 0], inputFit);
-        } else if (onScale && inputScale) {
-          im = im.resize(inputScale, {});
-        }
-        const buffer = await im.writeToBuffer('.webp', {
-          Q: ~~inputQuality // to int
-        });
-        blob = new Blob([buffer], { type: 'image/webp' });
-      } catch (e) {
-        if ((e as any).message.includes('unable to load from buffer')) {
-          errorMessage = 'Unsupported image format!';
-        } else {
-          errorMessage = (e as any).message;
-        }
+    for (const { blob, filename } of transformResults) {
+      if (!blob) {
+        continue;
       }
-
-      nextResults.push([file.name, errorMessage, file.size, blob?.size ?? 0]);
-
-      if (blob) {
-        const filename = file.name.replace(/\.[^/.]+$/, '');
-        if (files.length === 1) {
-          download(blob, `${filename}.webp`);
-          done();
-          return;
-        } else {
-          let newFilename = filename;
-          let i = 1;
-          while (filenames.has(newFilename)) {
-            newFilename = `${filename} (${i})`;
-            i++;
-          }
-          zip!.file(`${newFilename}.webp`, blob);
-        }
+      const basename = filename.replace(/\.[^/.]+$/, '');
+      let newFilename = basename;
+      let i = 1;
+      while (filenames.has(newFilename)) {
+        newFilename = `${basename} (${i})`;
+        i++;
       }
+      filenames.add(newFilename);
+      zip.file(`${newFilename}.webp`, blob);
     }
 
-    if (zip) {
-      const blob = await zip.generateAsync({ type: 'blob' });
-      download(blob, 'images.zip');
+    if (filenames.size === 0) {
+      return;
     }
-    done();
 
-    function done() {
-      loading = false;
-      progress.set(1);
-      results = nextResults;
-    }
+    const blob = await zip.generateAsync({ type: 'blob' });
+    download(blob, 'images.zip');
   }
 </script>
 
