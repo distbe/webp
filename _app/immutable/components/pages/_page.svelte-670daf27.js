@@ -2779,7 +2779,7 @@ function create_fragment(ctx) {
     h() {
       attr(div0, "class", "");
       attr(div1, "class", "flex-1");
-      attr(aside, "class", "flex-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col");
+      attr(aside, "class", "basis-[320px] flex-grow-0 flex-shrink-0 bg-[#151E2C] flex flex-col max-md:basis-[0] max-lg:basis-[240px]");
       attr(section, "class", "flex-1 flex items-center justify-center");
       if (!src_url_equal(img.src, img_src_value = logo))
         attr(img, "src", img_src_value);
@@ -2791,8 +2791,8 @@ function create_fragment(ctx) {
       attr(div2, "class", "text-sm text-white text-opacity-30");
       attr(div3, "class", "absolute right-0 bottom-0 py-2 px-3 flex items-center gap-x-2");
       attr(footer, "class", "relative");
-      attr(main, "class", "flex-1 flex-col flex");
-      attr(div4, "class", "flex h-full");
+      attr(main, "class", "flex-1 flex-col flex max-md:flex-[300px] max-md:flex-shrink-0 px-4");
+      attr(div4, "class", "flex h-full max-md:flex-col");
     },
     m(target, anchor) {
       insert_hydration(target, t0, anchor);
@@ -2941,7 +2941,7 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let $progress;
-  const version = "0.3.0";
+  const version = "0.3.1";
   let mounted = false;
   let isDragging = false;
   let loading = false;
