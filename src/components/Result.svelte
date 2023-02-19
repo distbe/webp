@@ -13,10 +13,14 @@
     const i = Math.floor(Math.log(size) / Math.log(k));
     return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
+
+  function trimSlash(filename: string) {
+    return filename.replace(/^\/+/, '');
+  }
 </script>
 
 <tr class="result">
-  <td class="result__filename">{filename}</td>
+  <td class="result__filename">{trimSlash(filename)}</td>
   {#if error}
     <td class="result__error" colspan="4">
       {error}
