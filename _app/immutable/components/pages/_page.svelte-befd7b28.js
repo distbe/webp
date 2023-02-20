@@ -2941,7 +2941,7 @@ function create_fragment(ctx) {
 }
 function instance($$self, $$props, $$invalidate) {
   let $progress;
-  const version = "0.3.1";
+  const version = "0.3.2";
   let mounted = false;
   let isDragging = false;
   let loading = false;
