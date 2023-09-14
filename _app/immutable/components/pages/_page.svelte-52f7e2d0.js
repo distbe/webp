@@ -2962,8 +2962,10 @@ function instance($$self, $$props, $$invalidate) {
         const parsed = JSON.parse(state);
         $$invalidate(0, inputQuality = parsed.inputQuality);
         $$invalidate(1, onSize = parsed.onSize);
-        $$invalidate(2, inputWidth = parsed.inputWidth);
-        $$invalidate(3, inputHeight = parsed.inputHeight);
+        if (parsed.onSize) {
+          $$invalidate(2, inputWidth = parsed.inputWidth);
+          $$invalidate(3, inputHeight = parsed.inputHeight);
+        }
         $$invalidate(4, inputFit = parsed.inputFit);
         $$invalidate(5, onScale = parsed.onScale);
         $$invalidate(6, inputScale = parsed.inputScale);
