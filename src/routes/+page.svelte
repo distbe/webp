@@ -63,8 +63,10 @@
         const parsed = JSON.parse(state);
         inputQuality = parsed.inputQuality;
         onSize = parsed.onSize;
-        inputWidth = parsed.inputWidth;
-        inputHeight = parsed.inputHeight;
+        if (parsed.onSize) {
+          inputWidth = parsed.inputWidth;
+          inputHeight = parsed.inputHeight;
+        }
         inputFit = parsed.inputFit;
         onScale = parsed.onScale;
         inputScale = parsed.inputScale;
