@@ -50,24 +50,22 @@
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
   <meta name="theme-color" content="#ffffff" />
 
-	<meta http-equiv="content-security-policy" content="">
-		<link href="./_app/immutable/assets/_layout-3dc7acce.css" rel="stylesheet">
-		<link href="./_app/immutable/assets/_page-1cf58d46.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/start-92ddf5b1.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/index-31b80213.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-61d560ad.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/index-fc865e59.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper-f8376bb0.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-44e755b8.js">
-		<link rel="modulepreload" href="./_app/immutable/modules/pages/_layout.ts-fa3c4266.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/_layout-9a8b0c19.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_page.svelte-c8674a26.js">
-		<link rel="modulepreload" href="./_app/immutable/modules/pages/_page.ts-ed610ca4.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/_page-de0ef88a.js">
+	
+		<link href="./_app/immutable/assets/0.8746701a.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.f48004e0.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.8ad1b430.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.660a2bcd.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.4f4b311d.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.18554981.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.86b317e9.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.a4192956.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.1acbfbf6.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.b6fa201e.js">
 </head>
 
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">
+
 
 
 <div class="min-h-screen h-px">
@@ -94,29 +92,38 @@
               <div class="text-center"><button class="text-white font-light text-sm underline leading-tight">or click to upload images</button></div></div>
             <div class="text-white font-light text-center text-sm text-opacity-70">Supports JPG, PNG, GIF, TIFF, WEBP, SVG.
             </div></div></div></section>
-    <footer class="relative"><div class="absolute right-0 bottom-0 py-2 px-3 flex items-center gap-x-2"><a href="https://github.com/distbe" target="_blank" rel="noopener noreferrer"><img src="/_app/immutable/assets/logo-ec8219a6.svg" alt="dist.be" class="w-[54px] h-[24px]"></a>
-        <div class="text-sm text-white text-opacity-30">v0.3.3</div></div></footer></main></div>
+    <footer class="relative"><div class="absolute right-0 bottom-0 py-2 px-3 flex items-center gap-x-2"><a href="https://github.com/distbe" target="_blank" rel="noopener noreferrer"><img src="/_app/immutable/assets/logo.ec8219a6.svg" alt="dist.be" class="w-[54px] h-[24px]"></a>
+        <div class="text-sm text-white text-opacity-30">v0.3.4</div></div></footer></main></div>
 
 </div>
 
 
-		<script type="module" data-sveltekit-hydrate="yvjtrq">
-			import { start } from "./_app/immutable/start-92ddf5b1.js";
+			
+			<script>
+				{
+					__sveltekit_1ikxzv8 = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
 
-			start({
-				assets: "",
-				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="yvjtrq"]').parentNode,
-				version: "1694691069186",
-				hydrate: {
-					node_ids: [0, 2],
-					data: [null,null],
-					form: null,
-					error: null
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.8ad1b430.js"),
+						import("./_app/immutable/entry/app.86b317e9.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
 				}
-			});
-		</script>
-	</div>
+			</script>
+		</div>
 </body>
 
 </html>
